@@ -1,0 +1,18 @@
+{
+  "name": "Program Builder (git)",
+  "subtitle": "Build program from a git repo",
+  "description": "Fetches your program from a git repo, builds it, and creates a program object on DNAnexus.",
+  "categories": [],
+  "dxapi": "1.03rc",
+  "version": "0.1",
+  "run": {"file": "git_program_builder.py", "interpreter": "python2.7"},
+  "inputs": [
+    {"name": "repo_url", "class": "string"},
+    {"name": "ref", "class": "string"},
+    {"name": "program_name", "class": "string"},
+    {"name": "credentials", "class": "string", "optional": true}
+  ],
+  "outputs": [
+    {"name": "program_id", "class": "string"}
+  ]
+}
