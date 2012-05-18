@@ -1,19 +1,56 @@
 import dxpy
+import os
 import shutil
+import stat
 import subprocess
 import tempfile
+
+def save_credentials(credentials):
+    """
+    Saves CREDENTIALS to disk in a place where git/SSH will be able to find it.
+
+    CREDENTIALS may be a dictionary with any of the following keys: "id_rsa",
+    "id_dsa", "id_ecdsa". If any are specified, the corresponding value should
+    be a string. Its value will be written to the corresponding file under
+    ~/.ssh.
+    """
+    # TODO: ignore keys that are not among those we explicitly recognize.
+    dot_ssh = os.path.expanduser("~/.ssh")
+
+    try:
+        os.mkdir(dot_ssh)
+    except:
+        pass
+
+    with open(os.path.join(dot_ssh, "config"), "w") as outfile:
+        outfile.write("StrictHostKeyChecking no")
+
+    for id_type in ("id_rsa", "id_dsa", "id_ecdsa"):
+        if id_type in credentials:
+            id_filename = os.path.join(dot_ssh, id_type)
+            print "Saving credentials %s => %s" % (id_type, id_filename)
+            with open(id_filename, "w") as outfile:
+                outfile.write(credentials[id_type].encode("utf8"))
+            # Change mode to 0600, as is befitting for credentials.
+            os.chmod(id_filename, stat.S_IRUSR | stat.S_IWUSR)
+
 
 def main():
     repo_url = job['input']['repo_url']
     ref = job['input']['ref']
     program_name = job['input']['program_name']
-    # TODO: obtain credentials too and make sure git can read them somehow
+    credentials = None
+    if job['input']['credentials']:
+        credentials = json.loads(job['input']['credentials'])
 
     # TODO: pull build tools into worker environment
 
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
     print "Program name: %s" % (program_name,)
+
+    if credentials:
+        save_credentials(credentials)
 
     # Clone the repo and run dx_build_program on it.
 
