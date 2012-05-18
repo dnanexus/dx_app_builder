@@ -22,6 +22,7 @@ def save_credentials(credentials):
     except:
         pass
 
+    # TODO: preload known_hosts entry for github.com and maybe others
     with open(os.path.join(dot_ssh, "config"), "w") as outfile:
         outfile.write("StrictHostKeyChecking no")
 
