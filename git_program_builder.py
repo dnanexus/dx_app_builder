@@ -1,4 +1,5 @@
 import dxpy
+import shutil
 import subprocess
 import tempfile
 
