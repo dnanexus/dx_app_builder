@@ -5,7 +5,7 @@
   "categories": [],
   "dxapi": "1.03rc",
   "version": "0.1",
-  "run": {"file": "git_program_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "git"}]},
+  "run": {"file": "git_program_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "git"}, {"name": "build-essential"}]},
   "inputs": [
     {"name": "repo_url", "class": "string"},
     {"name": "ref", "class": "string"},
