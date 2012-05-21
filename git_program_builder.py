@@ -59,7 +59,6 @@ def main():
     print "Working in " + tempdir
 
     # TODO: protect against directory traversal with program_name
-    # TODO: here or in worker environment, bypass SSH host key prompts
     os.chdir(tempdir)
     subprocess.check_call(['git', 'clone', repo_url, program_name])
 
