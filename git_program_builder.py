@@ -1,4 +1,5 @@
 import dxpy
+import json
 import os
 import shutil
 import stat
@@ -44,8 +45,6 @@ def main():
     if job['input']['credentials']:
         credentials = json.loads(job['input']['credentials'])
 
-    # TODO: pull build tools into worker environment
-
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
     print "Program name: %s" % (program_name,)
@@ -64,6 +63,22 @@ def main():
 
     os.chdir(program_name)
     subprocess.check_call(['git', 'checkout', '-q', ref])
+
+    # Load any build deps requested by the app.
+    try:
+        manifest = open('dxprogram')
+    except IOError:
+        manifest = open('dxprogram.json')
+    try:
+        parsed_manifest = json.load(manifest)
+        # TODO: check that manifest.buildDepends is an array of hashes
+        if 'buildDepends' in parsed_manifest:
+            depends = [dep['name'] for dep in parsed_manifest['buildDepends']]
+            print 'Installing the following packages specified in buildDepends: ' + ', '.join(depends)
+            cmd = ['sudo', 'apt-get', 'install', '--yes'] + depends
+            subprocess.check_call(cmd)
+    finally:
+        manifest.close()
 
     os.chdir(tempdir)
     subprocess.check_call(['dx_build_program', '--overwrite', program_name])
