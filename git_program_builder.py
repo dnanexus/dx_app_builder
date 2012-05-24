@@ -42,7 +42,7 @@ def main():
     ref = job['input']['ref']
     program_name = job['input']['program_name']
     credentials = None
-    if job['input']['credentials']:
+    if 'credentials' in job['input']:
         credentials = json.loads(job['input']['credentials'])
 
     print "Repo URL: %s" % (repo_url,)
