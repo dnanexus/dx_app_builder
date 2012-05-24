@@ -10,7 +10,9 @@
     {"name": "repo_url", "class": "string"},
     {"name": "ref", "class": "string"},
     {"name": "program_name", "class": "string"},
-    {"name": "credentials", "class": "string", "optional": true}
+    {"name": "credentials", "class": "string", "optional": true},
+    {"name": "target_apiserver_host", "class": "string", "optional": true},
+    {"name": "target_apiserver_port", "class": "int", "optional": true}
   ],
   "outputs": [
     {"name": "program_id", "class": "string"}

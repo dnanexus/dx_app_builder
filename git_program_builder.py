@@ -44,10 +44,20 @@ def main():
     credentials = None
     if 'credentials' in job['input']:
         credentials = json.loads(job['input']['credentials'])
+    target_apiserver_host = None
+    if 'target_apiserver_host' in job['input']:
+        target_apiserver_host = job['input']['target_apiserver_host']
+    target_apiserver_port = None
+    if 'target_apiserver_port' in job['input']:
+        target_apiserver_port = job['input']['target_apiserver_port']
 
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
     print "Program name: %s" % (program_name,)
+    if target_apiserver_host:
+        print "Overriding API server host: %s" % (target_apiserver_host,)
+    if target_apiserver_port:
+        print "Overriding API server port: %d" % (target_apiserver_port,)
 
     if credentials:
         save_credentials(credentials)
@@ -80,7 +90,14 @@ def main():
     finally:
         manifest.close()
 
+    # Override the API server host and port if requested.
+    env = dict(os.environ)
+    if target_apiserver_host:
+        env['DX_APISERVER_HOST'] = target_apiserver_host
+    if target_apiserver_port:
+        env['DX_APISERVER_PORT'] = target_apiserver_port
+
     os.chdir(tempdir)
-    subprocess.check_call(['dx_build_program', '--overwrite', program_name])
+    subprocess.check_call(['dx_build_program', '--overwrite', program_name], env=env)
 
     shutil.rmtree(tempdir)
