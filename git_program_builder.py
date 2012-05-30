@@ -41,8 +41,7 @@ def main():
     repo_url = job['input']['repo_url']
     ref = job['input']['ref']
     program_name = job['input']['program_name']
-    # TODO: figure out whether dest_project should be a required attribute
-    dest_project = 'project-000000000000000000000001'
+    dest_project = None
     if 'destination_project' in job['input']:
         dest_project = job['input']['destination_project']
     credentials = None
@@ -103,6 +102,10 @@ def main():
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
     os.chdir(tempdir)
-    subprocess.check_call(['dx_build_program', '-p', dest_project, '--overwrite', program_name], env=env)
+    cmd = ['dx_build_program']
+    if dest_project:
+        cmd.extend(['-p', dest_project])
+    cmd.extend(['--overwrite', program_name])
+    subprocess.check_call(cmd, env=env)
 
     shutil.rmtree(tempdir)
