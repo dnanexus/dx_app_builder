@@ -41,6 +41,10 @@ def main():
     repo_url = job['input']['repo_url']
     ref = job['input']['ref']
     program_name = job['input']['program_name']
+    # TODO: figure out whether dest_project should be a required attribute
+    dest_project = 'project-000000000000000000000001'
+    if 'destination_project' in job['input']:
+        dest_project = job['input']['destination_project']
     credentials = None
     if 'credentials' in job['input']:
         credentials = json.loads(job['input']['credentials'])
@@ -54,6 +58,7 @@ def main():
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
     print "Program name: %s" % (program_name,)
+    print "Destination project: %s" % (dest_project,)
     if target_apiserver_host:
         print "Overriding API server host: %s" % (target_apiserver_host,)
     if target_apiserver_port:
@@ -98,6 +103,6 @@ def main():
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
     os.chdir(tempdir)
-    subprocess.check_call(['dx_build_program', '--overwrite', program_name], env=env)
+    subprocess.check_call(['dx_build_program', '-p', dest_project, '--overwrite', program_name], env=env)
 
     shutil.rmtree(tempdir)
