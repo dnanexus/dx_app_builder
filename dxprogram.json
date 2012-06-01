@@ -16,6 +16,6 @@
     {"name": "target_apiserver_port", "class": "int", "optional": true}
   ],
   "outputs": [
-    {"name": "program_id", "class": "string"}
+    {"name": "program", "class": "program"}
   ]
 }

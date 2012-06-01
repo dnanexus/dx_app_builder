@@ -106,6 +106,7 @@ def main():
     if dest_project:
         cmd.extend(['-p', dest_project])
     cmd.extend(['--overwrite', program_name])
-    subprocess.check_call(cmd, env=env)
+    build_program_output = json.loads(subprocess.check_output(cmd, env=env))
+    job['output']['program'] = dxpy.dxlink(build_program_output['id'])
 
     shutil.rmtree(tempdir)
