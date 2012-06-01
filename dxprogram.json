@@ -1,6 +1,7 @@
 {
-  "name": "Program Builder (git)",
-  "subtitle": "Build program from a git repo",
+  "name": "git_program_builder",
+  "title": "Program Builder (git)",
+  "summary": "Build program from a git repo",
   "description": "Fetches your program from a git repo, builds it, and creates a program object on DNAnexus.",
   "categories": [],
   "dxapi": "1.03rc",
