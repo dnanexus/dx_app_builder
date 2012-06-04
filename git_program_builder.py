@@ -79,11 +79,7 @@ def main():
     subprocess.check_call(['git', 'checkout', '-q', ref])
 
     # Load any build deps requested by the app.
-    try:
-        manifest = open('dxprogram')
-    except IOError:
-        manifest = open('dxprogram.json')
-    try:
+    with open('dxprogram.json') as manifest:
         parsed_manifest = json.load(manifest)
         # TODO: check that manifest.buildDepends is an array of hashes
         if 'buildDepends' in parsed_manifest:
@@ -91,8 +87,6 @@ def main():
             print 'Installing the following packages specified in buildDepends: ' + ', '.join(depends)
             cmd = ['sudo', 'apt-get', 'install', '--yes'] + depends
             subprocess.check_call(cmd)
-    finally:
-        manifest.close()
 
     # Override the API server host and port if requested.
     env = dict(os.environ)
