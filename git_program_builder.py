@@ -78,6 +78,8 @@ def main():
     os.chdir(program_name)
     subprocess.check_call(['git', 'checkout', '-q', ref])
 
+    subprocess.check_call(['git', 'submodule', 'update', '--init'])
+
     # Load any build deps requested by the app.
     with open('dxprogram.json') as manifest:
         parsed_manifest = json.load(manifest)
