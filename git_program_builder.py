@@ -6,14 +6,13 @@ import stat
 import subprocess
 import tempfile
 
-def save_credentials(credentials):
+def save_credentials(id_type, credentials_data):
     """
-    Saves CREDENTIALS to disk in a place where git/SSH will be able to find it.
+    Saves credentials to disk in a place where git/SSH will be able to find it.
 
-    CREDENTIALS may be a dictionary with any of the following keys: "id_rsa",
-    "id_dsa", "id_ecdsa". If any are specified, the corresponding value should
-    be a string. Its value will be written to the corresponding file under
-    ~/.ssh.
+    ID_TYPE may be any of the following keys: "id_rsa", "id_dsa", "id_ecdsa".
+    The value of CREDENTIALS_DATA will be written to the corresponding file
+    under ~/.ssh.
     """
     # TODO: ignore keys that are not among those we explicitly recognize.
     dot_ssh = os.path.expanduser("~/.ssh")
@@ -27,26 +26,27 @@ def save_credentials(credentials):
     with open(os.path.join(dot_ssh, "config"), "w") as outfile:
         outfile.write("StrictHostKeyChecking no")
 
-    for id_type in ("id_rsa", "id_dsa", "id_ecdsa"):
-        if id_type in credentials:
-            id_filename = os.path.join(dot_ssh, id_type)
-            print "Saving credentials %s => %s" % (id_type, id_filename)
-            with open(id_filename, "w") as outfile:
-                outfile.write(credentials[id_type].encode("utf8"))
-            # Change mode to 0600, as is befitting for credentials.
-            os.chmod(id_filename, stat.S_IRUSR | stat.S_IWUSR)
+    id_filename = os.path.join(dot_ssh, id_type)
+    print "Saving credentials %s => %s" % (id_type, id_filename)
+    with open(id_filename, "w") as outfile:
+        outfile.write(credentials_data.encode("utf8"))
+    # Change mode to 0600, as is befitting for credentials.
+    os.chmod(id_filename, stat.S_IRUSR | stat.S_IWUSR)
 
 
 def main():
     repo_url = job['input']['repo_url']
     ref = job['input']['ref']
-    program_name = job['input']['program_name']
+    app_name = job['input']['app_name']
     dest_project = None
     if 'destination_project' in job['input']:
         dest_project = job['input']['destination_project']
-    credentials = None
-    if 'credentials' in job['input']:
-        credentials = json.loads(job['input']['credentials'])
+    credentials_type = None
+    if 'credentials_type' in job['input']:
+        credentials_type = json.loads(job['input']['credentials_type'])
+    credentials_data = None
+    if 'credentials_data' in job['input']:
+        credentials_data = json.loads(job['input']['credentials_data'])
     target_apiserver_host = None
     if 'target_apiserver_host' in job['input']:
         target_apiserver_host = job['input']['target_apiserver_host']
@@ -56,26 +56,26 @@ def main():
 
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
-    print "Program name: %s" % (program_name,)
+    print "App name: %s" % (app_name,)
     print "Destination project: %s" % (dest_project,)
     if target_apiserver_host:
         print "Overriding API server host: %s" % (target_apiserver_host,)
     if target_apiserver_port:
         print "Overriding API server port: %d" % (target_apiserver_port,)
 
-    if credentials:
-        save_credentials(credentials)
+    if credentials_type:
+        save_credentials(credentials_type, credentials_data)
 
     # Clone the repo and run dx_build_program on it.
 
     tempdir = tempfile.mkdtemp()
     print "Working in " + tempdir
 
-    # TODO: protect against directory traversal with program_name
+    # TODO: protect against directory traversal with app_name
     os.chdir(tempdir)
-    subprocess.check_call(['git', 'clone', repo_url, program_name])
+    subprocess.check_call(['git', 'clone', repo_url, app_name])
 
-    os.chdir(program_name)
+    os.chdir(app_name)
     subprocess.check_call(['git', 'checkout', '-q', ref])
 
     subprocess.check_call(['git', 'submodule', 'update', '--init'])
@@ -98,11 +98,11 @@ def main():
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
     os.chdir(tempdir)
-    cmd = ['dx_build_program']
+    cmd = ['dx_build_program', '-a', '--publish']
     if dest_project:
         cmd.extend(['-p', dest_project])
-    cmd.extend(['--overwrite', program_name])
+    cmd.extend(['--overwrite', app_name])
     build_program_output = json.loads(subprocess.check_output(cmd, env=env))
-    job['output']['program'] = dxpy.dxlink(build_program_output['id'])
+    job['output']['program'] = dxpy.dxlink(build_program_output['program'])
 
     shutil.rmtree(tempdir)
