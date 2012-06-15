@@ -6,13 +6,10 @@ import stat
 import subprocess
 import tempfile
 
-def save_credentials(id_type, credentials_data):
+def save_credentials(credentials_data):
     """
-    Saves credentials to disk in a place where git/SSH will be able to find it.
-
-    ID_TYPE may be any of the following keys: "id_rsa", "id_dsa", "id_ecdsa".
-    The value of CREDENTIALS_DATA will be written to the corresponding file
-    under ~/.ssh.
+    Saves credentials (contents of any of: id_rsa, id_dsa, id_ecdsa) to disk in
+    a place where git/SSH will be able to find it.
     """
     # TODO: ignore keys that are not among those we explicitly recognize.
     dot_ssh = os.path.expanduser("~/.ssh")
@@ -26,8 +23,8 @@ def save_credentials(id_type, credentials_data):
     with open(os.path.join(dot_ssh, "config"), "w") as outfile:
         outfile.write("StrictHostKeyChecking no")
 
-    id_filename = os.path.join(dot_ssh, id_type)
-    print "Saving credentials %s => %s" % (id_type, id_filename)
+    id_filename = os.path.join(dot_ssh, "incubator_ssh_id")
+    print "Saving credentials to %s" % (id_filename)
     with open(id_filename, "w") as outfile:
         outfile.write(credentials_data.encode("utf8"))
     # Change mode to 0600, as is befitting for credentials.
@@ -41,9 +38,6 @@ def main():
     dest_project = None
     if 'destination_project' in job['input']:
         dest_project = job['input']['destination_project']
-    credentials_type = None
-    if 'credentials_type' in job['input']:
-        credentials_type = json.loads(job['input']['credentials_type'])
     credentials_data = None
     if 'credentials_data' in job['input']:
         credentials_data = json.loads(job['input']['credentials_data'])
@@ -63,8 +57,8 @@ def main():
     if target_apiserver_port:
         print "Overriding API server port: %d" % (target_apiserver_port,)
 
-    if credentials_type:
-        save_credentials(credentials_type, credentials_data)
+    if credentials_data:
+        save_credentials(credentials_data)
 
     # Clone the repo and run dx_build_program on it.
 

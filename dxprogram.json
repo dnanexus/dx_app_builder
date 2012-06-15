@@ -11,7 +11,6 @@
     {"name": "ref", "class": "string"},
     {"name": "app_name", "class": "string"},
     {"name": "destination_project", "class": "string", "optional": true},
-    {"name": "credentials_type", "class": "string", "optional": true},
     {"name": "credentials_data", "class": "string", "optional": true},
     {"name": "target_apiserver_host", "class": "string", "optional": true},
     {"name": "target_apiserver_port", "class": "int", "optional": true}
