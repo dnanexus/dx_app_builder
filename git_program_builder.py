@@ -92,7 +92,7 @@ def main():
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
     os.chdir(tempdir)
-    cmd = ['dx_build_program', '-a', '--publish']
+    cmd = ['dx_build_program', '-a']
     if dest_project:
         cmd.extend(['-p', dest_project])
     cmd.extend(['--overwrite', app_name])
