@@ -40,7 +40,7 @@ def main():
         dest_project = job['input']['destination_project']
     credentials_data = None
     if 'credentials_data' in job['input']:
-        credentials_data = json.loads(job['input']['credentials_data'])
+        credentials_data = job['input']['credentials_data']
     target_apiserver_host = None
     if 'target_apiserver_host' in job['input']:
         target_apiserver_host = job['input']['target_apiserver_host']
