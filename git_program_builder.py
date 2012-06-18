@@ -6,6 +6,10 @@ import stat
 import subprocess
 import tempfile
 
+def ssh_id_filename():
+    # TODO: ensure .ssh exists (currently this is done below)
+    return os.path.join(os.path.expanduser("~/.ssh"), "incubator_ssh_id")
+
 def save_credentials(credentials_data):
     """
     Saves credentials (contents of any of: id_rsa, id_dsa, id_ecdsa) to disk in
@@ -23,7 +27,7 @@ def save_credentials(credentials_data):
     with open(os.path.join(dot_ssh, "config"), "w") as outfile:
         outfile.write("StrictHostKeyChecking no")
 
-    id_filename = os.path.join(dot_ssh, "incubator_ssh_id")
+    id_filename = ssh_id_filename()
     print "Saving credentials to %s" % (id_filename)
     with open(id_filename, "w") as outfile:
         outfile.write(credentials_data.encode("utf8"))
@@ -65,9 +69,20 @@ def main():
     tempdir = tempfile.mkdtemp()
     print "Working in " + tempdir
 
+    # Make an SSH wrapper that will make SSH use the provided key (and no
+    # other).
+    ssh_wrapper_filename = os.path.join(tempdir, 'ssh_wrapper')
+    with open(ssh_wrapper_filename, 'w') as ssh_wrapper_outfile:
+        ssh_wrapper_outfile.write("!/bin/sh\nssh -i" + ssh_id_filename() + " -oIdentitiesonly=yes \"$@\"\n")
+    os.chmod(ssh_wrapper_filename, stat.S_IRUSR | stat.S_IXUSR)
+
     # TODO: protect against directory traversal with app_name
-    os.chdir(tempdir)
-    subprocess.check_call(['git', 'clone', repo_url, app_name])
+    checkout_dir = os.path.join(tempdir, "clonedest")
+    os.mkdir(checkout_dir)
+    os.chdir(checkout_dir)
+    override_env = dict(os.environ)
+    override_env['GIT_SSH'] = ssh_wrapper_filename
+    subprocess.check_call(['git', 'clone', repo_url, app_name], env=override_env)
 
     os.chdir(app_name)
     subprocess.check_call(['git', 'checkout', '-q', ref])
@@ -91,7 +106,7 @@ def main():
     if target_apiserver_port:
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
-    os.chdir(tempdir)
+    os.chdir(checkout_dir)
     cmd = ['dx_build_program', '-a']
     if dest_project:
         cmd.extend(['-p', dest_project])
