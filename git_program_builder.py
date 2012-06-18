@@ -73,7 +73,7 @@ def main():
     # other).
     ssh_wrapper_filename = os.path.join(tempdir, 'ssh_wrapper')
     with open(ssh_wrapper_filename, 'w') as ssh_wrapper_outfile:
-        ssh_wrapper_outfile.write("!/bin/sh\nssh -i" + ssh_id_filename() + " -oIdentitiesonly=yes \"$@\"\n")
+        ssh_wrapper_outfile.write("#!/bin/sh\nssh -i" + ssh_id_filename() + " -oIdentitiesonly=yes \"$@\"\n")
     os.chmod(ssh_wrapper_filename, stat.S_IRUSR | stat.S_IXUSR)
 
     # TODO: protect against directory traversal with app_name
