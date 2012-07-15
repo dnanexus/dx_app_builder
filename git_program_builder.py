@@ -38,7 +38,6 @@ def save_credentials(credentials_data):
 def main():
     repo_url = job['input']['repo_url']
     ref = job['input']['ref']
-    app_name = job['input']['app_name']
     dest_project = None
     if 'destination_project' in job['input']:
         dest_project = job['input']['destination_project']
@@ -54,7 +53,6 @@ def main():
 
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
-    print "App name: %s" % (app_name,)
     print "Destination project: %s" % (dest_project,)
     if target_apiserver_host:
         print "Overriding API server host: %s" % (target_apiserver_host,)
@@ -76,15 +74,14 @@ def main():
         ssh_wrapper_outfile.write("#!/bin/sh\nssh -i" + ssh_id_filename() + " -oIdentitiesonly=yes \"$@\"\n")
     os.chmod(ssh_wrapper_filename, stat.S_IRUSR | stat.S_IXUSR)
 
-    # TODO: protect against directory traversal with app_name
     checkout_dir = os.path.join(tempdir, "clonedest")
     os.mkdir(checkout_dir)
     os.chdir(checkout_dir)
     override_env = dict(os.environ)
     override_env['GIT_SSH'] = ssh_wrapper_filename
-    subprocess.check_call(['git', 'clone', repo_url, app_name], env=override_env)
+    subprocess.check_call(['git', 'clone', repo_url, 'userapp'], env=override_env)
 
-    os.chdir(app_name)
+    os.chdir('userapp')
     subprocess.check_call(['git', 'checkout', '-q', ref])
 
     subprocess.check_call(['git', 'submodule', 'update', '--init'])
@@ -110,7 +107,7 @@ def main():
     cmd = ['dx_build_program', '-a']
     if dest_project:
         cmd.extend(['-p', dest_project])
-    cmd.extend(['--overwrite', app_name])
+    cmd.extend(['--overwrite', 'userapp'])
     build_program_output = json.loads(subprocess.check_output(cmd, env=env))
     job['output']['program'] = dxpy.dxlink(build_program_output['program'])
 
