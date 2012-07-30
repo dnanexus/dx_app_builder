@@ -5,7 +5,7 @@
   "description": "Builds your app from a git repository.\n\nThe Program Builder does the following:\n\n* Clones your program from a git repo, optionally using credentials specified by you\n* Builds your program with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting program object to DNAnexus and creates an App",
   "categories": [],
   "dxapi": "1.04",
-  "runSpec": {"file": "git_program_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "git"}, {"name": "build-essential"}, {"name": "automake"}]},
+  "runSpec": {"file": "git_program_builder.py", "interpreter": "python2.7_old", "execDepends": [{"name": "git"}, {"name": "build-essential"}, {"name": "automake"}]},
   "inputSpec": [
     {"name": "repo_url", "class": "string"},
     {"name": "ref", "class": "string"},
