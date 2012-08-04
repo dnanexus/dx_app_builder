@@ -62,7 +62,7 @@ def main():
     if credentials_data:
         save_credentials(credentials_data)
 
-    # Clone the repo and run dx_build_program on it.
+    # Clone the repo and run dx_build_app on it.
 
     tempdir = tempfile.mkdtemp()
     print "Working in " + tempdir
@@ -87,7 +87,7 @@ def main():
     subprocess.check_call(['git', 'submodule', 'update', '--init'])
 
     # Load any build deps requested by the app.
-    with open('dxprogram.json') as manifest:
+    with open('dxapp.json') as manifest:
         parsed_manifest = json.load(manifest)
         # TODO: check that manifest.buildDepends is an array of hashes
         if 'buildDepends' in parsed_manifest:
@@ -104,11 +104,11 @@ def main():
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
     os.chdir(checkout_dir)
-    cmd = ['dx_build_program', '-a']
+    cmd = ['dx_build_app', '-a']
     if dest_project:
         cmd.extend(['-p', dest_project])
     cmd.extend(['--overwrite', 'userapp'])
-    build_program_output = json.loads(subprocess.check_output(cmd, env=env))
-    job['output']['program'] = dxpy.dxlink(build_program_output['program'])
+    build_app_output = json.loads(subprocess.check_output(cmd, env=env))
+    job['output']['applet'] = dxpy.dxlink(build_app_output['applet'])
 
     shutil.rmtree(tempdir)

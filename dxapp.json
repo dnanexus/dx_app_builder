@@ -1,11 +1,11 @@
 {
-  "name": "git_program_builder",
-  "title": "Program Builder (git)",
-  "summary": "Build program from a git repo",
-  "description": "Builds your app from a git repository.\n\nThe Program Builder does the following:\n\n* Clones your program from a git repo, optionally using credentials specified by you\n* Builds your program with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting program object to DNAnexus and creates an App",
+  "name": "git_app_builder",
+  "title": "App Builder (git)",
+  "summary": "Build an app or applet from a git repo",
+  "description": "Builds your app from a git repository.\n\nThe App Builder does the following:\n\n* Clones your source from a git repo, optionally using credentials specified by you\n* Builds an applet with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting applet to DNAnexus and creates an app",
   "categories": [],
   "dxapi": "1.04",
-  "runSpec": {"file": "git_program_builder.py", "interpreter": "python2.7_old", "execDepends": [{"name": "git"}, {"name": "build-essential"}, {"name": "automake"}]},
+  "runSpec": {"file": "git_app_builder.py", "interpreter": "python2.7_old", "execDepends": [{"name": "git"}, {"name": "build-essential"}, {"name": "automake"}]},
   "inputSpec": [
     {"name": "repo_url", "class": "string"},
     {"name": "ref", "class": "string"},
@@ -16,11 +16,9 @@
     {"name": "tags", "class": "string", "optional": true}
   ],
   "outputSpec": [
-    {"name": "program", "class": "program"}
-  ]
-,
-
+    {"name": "applet", "class": "applet"}
+  ],
   "resources": [],
-  "version": "0.0.13",
+  "version": "0.1.0",
   "access": { "full": true }
 }
