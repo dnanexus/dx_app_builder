@@ -10,10 +10,10 @@ def ssh_id_filename():
     # TODO: ensure .ssh exists (currently this is done below)
     return os.path.join(os.path.expanduser("~/.ssh"), "incubator_ssh_id")
 
-def save_credentials(credentials_data):
+def save_credentials(credentials):
     """
-    Saves credentials (contents of any of: id_rsa, id_dsa, id_ecdsa) to disk in
-    a place where git/SSH will be able to find it.
+    Saves credentials file to disk in a place where git/SSH will be able to
+    find it.
     """
     # TODO: ignore keys that are not among those we explicitly recognize.
     dot_ssh = os.path.expanduser("~/.ssh")
@@ -29,8 +29,7 @@ def save_credentials(credentials_data):
 
     id_filename = ssh_id_filename()
     print "Saving credentials to %s" % (id_filename)
-    with open(id_filename, "w") as outfile:
-        outfile.write(credentials_data.encode("utf8"))
+    dxpy.download_dxfile(credentials, id_filename)
     # Change mode to 0600, as is befitting for credentials.
     os.chmod(id_filename, stat.S_IRUSR | stat.S_IWUSR)
 
@@ -41,9 +40,9 @@ def main():
     dest_project = None
     if 'destination_project' in job['input']:
         dest_project = job['input']['destination_project']
-    credentials_data = None
-    if 'credentials_data' in job['input']:
-        credentials_data = job['input']['credentials_data']
+    credentials = None
+    if 'credentials' in job['input']:
+        credentials = job['input']['credentials']
     target_apiserver_host = None
     if 'target_apiserver_host' in job['input']:
         target_apiserver_host = job['input']['target_apiserver_host']
@@ -59,8 +58,8 @@ def main():
     if target_apiserver_port:
         print "Overriding API server port: %d" % (target_apiserver_port,)
 
-    if credentials_data:
-        save_credentials(credentials_data)
+    if credentials:
+        save_credentials(credentials)
 
     # Clone the repo and run dx_build_app on it.
 
