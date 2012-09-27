@@ -1,8 +1,8 @@
 {
   "name": "git_app_builder",
-  "title": "App Builder (git)",
-  "summary": "Build an app or applet from a git repo",
-  "description": "Builds your app from a git repository.\n\nThe App Builder does the following:\n\n* Clones your source from a git repo, optionally using credentials specified by you\n* Builds an applet with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting applet to DNAnexus and creates an app",
+  "title": "git App Builder",
+  "summary": "Builds an app from a git repo",
+  "description": "Builds your app from a git repository.\n\nThe App Builder does the following:\n\n* Clones your source from a git repo, optionally using credentials specified by you\n* Builds with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting applet to DNAnexus and creates an app",
   "categories": [],
   "dxapi": "1.0.0",
   "runSpec": {"file": "git_app_builder.py", "interpreter": "python2.7_old", "execDepends": [{"name": "git"}, {"name": "build-essential"}, {"name": "automake"}]},
@@ -16,6 +16,6 @@
   "outputSpec": [
   ],
   "resources": [],
-  "version": "0.1.0",
+  "version": "1.0.0",
   "access": { "developer": true }
 }
