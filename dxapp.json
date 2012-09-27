@@ -8,7 +8,7 @@
   "runSpec": {"file": "git_app_builder.py", "interpreter": "python2.7_old", "execDepends": [{"name": "git"}, {"name": "build-essential"}, {"name": "automake"}]},
   "inputSpec": [
     {"name": "repo_url", "class": "string"},
-    {"name": "ref", "class": "string"},
+    {"name": "ref", "class": "string", "optional": true},
     {"name": "destination_project", "class": "string", "optional": true},
     {"name": "credentials", "class": "file", "optional": true},
     {"name": "target_apiserver_host", "class": "string", "optional": true},

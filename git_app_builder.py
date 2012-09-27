@@ -36,7 +36,9 @@ def save_credentials(credentials):
 
 def main():
     repo_url = job['input']['repo_url']
-    ref = job['input']['ref']
+    ref = 'master'
+    if 'ref' in job['input']:
+        ref = job['input']['ref']
     dest_project = None
     if 'destination_project' in job['input']:
         dest_project = job['input']['destination_project']
