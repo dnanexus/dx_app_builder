@@ -1,7 +1,6 @@
 import dxpy
 import json
 import os
-import shutil
 import stat
 import subprocess
 import tempfile
@@ -95,8 +94,6 @@ def main(repo_url, ref='master', credentials=None, target_apiserver_host=None, t
         cmd.extend(['--publish'])
     cmd.extend(['userapp'])
     subprocess.check_call(cmd, env=env)
-
-    shutil.rmtree(tempdir)
 
 
 dxpy.run()
