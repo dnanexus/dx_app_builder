@@ -95,5 +95,7 @@ def main(repo_url, ref='master', credentials=None, target_apiserver_host=None, t
     cmd.extend(['userapp'])
     subprocess.check_call(cmd, env=env)
 
+    return {}
+
 
 dxpy.run()
