@@ -33,21 +33,8 @@ def save_credentials(credentials):
     # Change mode to 0600, as is befitting for credentials.
     os.chmod(id_filename, stat.S_IRUSR | stat.S_IWUSR)
 
-
-def main():
-    repo_url = job['input']['repo_url']
-    ref = 'master'
-    if 'ref' in job['input']:
-        ref = job['input']['ref']
-    credentials = None
-    if 'credentials' in job['input']:
-        credentials = job['input']['credentials']
-    target_apiserver_host = None
-    if 'target_apiserver_host' in job['input']:
-        target_apiserver_host = job['input']['target_apiserver_host']
-    target_apiserver_port = None
-    if 'target_apiserver_port' in job['input']:
-        target_apiserver_port = job['input']['target_apiserver_port']
+@dxpy.entry_point('main')
+def main(repo_url, ref='master', credentials=None, target_apiserver_host=None, target_apiserver_port=None):
 
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
@@ -106,3 +93,6 @@ def main():
     subprocess.check_call(cmd, env=env)
 
     shutil.rmtree(tempdir)
+
+
+dxpy.run()
