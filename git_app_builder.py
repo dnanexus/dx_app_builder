@@ -75,7 +75,8 @@ def main():
     os.mkdir(checkout_dir)
     os.chdir(checkout_dir)
     override_env = dict(os.environ)
-    override_env['GIT_SSH'] = ssh_wrapper_filename
+    if credentials:
+        override_env['GIT_SSH'] = ssh_wrapper_filename
     subprocess.check_call(['git', 'clone', repo_url, 'userapp'], env=override_env)
 
     os.chdir('userapp')
