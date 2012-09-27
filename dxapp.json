@@ -17,5 +17,5 @@
   ],
   "resources": [],
   "version": "0.1.0",
-  "access": { "full": true }
+  "access": { "developer": true }
 }
