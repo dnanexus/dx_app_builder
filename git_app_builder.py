@@ -101,7 +101,7 @@ def main():
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
     os.chdir(checkout_dir)
-    cmd = ['dx-build-app', 'userapp']
+    cmd = ['dx-build-app', '--no-temp-build-project', 'userapp']
     subprocess.check_call(cmd, env=env)
 
     shutil.rmtree(tempdir)
