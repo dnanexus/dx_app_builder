@@ -34,7 +34,8 @@ def save_credentials(credentials):
     os.chmod(id_filename, stat.S_IRUSR | stat.S_IWUSR)
 
 @dxpy.entry_point('main')
-def main(repo_url, ref='master', credentials=None, target_apiserver_host=None, target_apiserver_port=None):
+def main(repo_url, ref='master', credentials=None, target_apiserver_host=None, target_apiserver_port=None,
+         publish=False):
 
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
@@ -89,7 +90,10 @@ def main(repo_url, ref='master', credentials=None, target_apiserver_host=None, t
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
     os.chdir(checkout_dir)
-    cmd = ['dx-build-app', '--no-temp-build-project', 'userapp']
+    cmd = ['dx-build-app', '--no-temp-build-project']
+    if publish:
+        cmd.extend(['--publish'])
+    cmd.extend(['userapp'])
     subprocess.check_call(cmd, env=env)
 
     shutil.rmtree(tempdir)

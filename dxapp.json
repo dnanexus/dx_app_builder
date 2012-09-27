@@ -11,7 +11,8 @@
     {"name": "ref", "class": "string", "optional": true},
     {"name": "credentials", "class": "file", "optional": true},
     {"name": "target_apiserver_host", "class": "string", "optional": true},
-    {"name": "target_apiserver_port", "class": "int", "optional": true}
+    {"name": "target_apiserver_port", "class": "int", "optional": true},
+    {"name": "publish", "class": "boolean", "optional": true}
   ],
   "outputSpec": [
   ],
