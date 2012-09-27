@@ -39,9 +39,6 @@ def main():
     ref = 'master'
     if 'ref' in job['input']:
         ref = job['input']['ref']
-    dest_project = None
-    if 'destination_project' in job['input']:
-        dest_project = job['input']['destination_project']
     credentials = None
     if 'credentials' in job['input']:
         credentials = job['input']['credentials']
@@ -54,7 +51,6 @@ def main():
 
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
-    print "Destination project: %s" % (dest_project,)
     if target_apiserver_host:
         print "Overriding API server host: %s" % (target_apiserver_host,)
     if target_apiserver_port:
@@ -63,7 +59,7 @@ def main():
     if credentials:
         save_credentials(credentials)
 
-    # Clone the repo and run dx_build_app on it.
+    # Clone the repo and run dx-build-app on it.
 
     tempdir = tempfile.mkdtemp()
     print "Working in " + tempdir
@@ -105,11 +101,7 @@ def main():
         env['DX_APISERVER_PORT'] = target_apiserver_port
 
     os.chdir(checkout_dir)
-    cmd = ['dx_build_app', '-a']
-    if dest_project:
-        cmd.extend(['-p', dest_project])
-    cmd.extend(['--overwrite', 'userapp'])
-    build_app_output = json.loads(subprocess.check_output(cmd, env=env))
-    job['output']['applet'] = dxpy.dxlink(build_app_output['applet'])
+    cmd = ['dx-build-app', 'userapp']
+    subprocess.check_call(cmd, env=env)
 
     shutil.rmtree(tempdir)

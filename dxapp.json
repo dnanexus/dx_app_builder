@@ -9,13 +9,11 @@
   "inputSpec": [
     {"name": "repo_url", "class": "string"},
     {"name": "ref", "class": "string", "optional": true},
-    {"name": "destination_project", "class": "string", "optional": true},
     {"name": "credentials", "class": "file", "optional": true},
     {"name": "target_apiserver_host", "class": "string", "optional": true},
     {"name": "target_apiserver_port", "class": "int", "optional": true}
   ],
   "outputSpec": [
-    {"name": "applet", "class": "applet"}
   ],
   "resources": [],
   "version": "0.1.0",
