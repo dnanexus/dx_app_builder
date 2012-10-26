@@ -1,9 +1,12 @@
 import dxpy
-import json
 import os
 import stat
 import subprocess
+import sys
 import tempfile
+
+sys.path.append('/opt/pythonlibs')
+import app_builder
 
 def ssh_id_filename():
     # TODO: ensure .ssh exists (currently this is done below)
@@ -32,16 +35,17 @@ def save_credentials(credentials):
     # Change mode to 0600, as is befitting for credentials.
     os.chmod(id_filename, stat.S_IRUSR | stat.S_IWUSR)
 
-@dxpy.entry_point('main')
-def main(repo_url, ref='master', credentials=None, target_apiserver_host=None, target_apiserver_port=None,
-         publish=False):
+def clone_repository(repo_url, ref='master', credentials=None):
+    """
+    Clones the specified repository (including all submodules) and
+    returns a string containing the location of the newly cloned repo.
+    """
+
+    # TODO: are submodules cloned recursively?
+    # TODO: allow specifying multiple credentials for submodules
 
     print "Repo URL: %s" % (repo_url,)
     print "Ref name: %s" % (ref,)
-    if target_apiserver_host:
-        print "Overriding API server host: %s" % (target_apiserver_host,)
-    if target_apiserver_port:
-        print "Overriding API server port: %d" % (target_apiserver_port,)
 
     if credentials:
         save_credentials(credentials)
@@ -68,32 +72,16 @@ def main(repo_url, ref='master', credentials=None, target_apiserver_host=None, t
 
     os.chdir('userapp')
     subprocess.check_call(['git', 'checkout', '-q', ref])
-
     subprocess.check_call(['git', 'submodule', 'update', '--init'])
 
-    # Load any build deps requested by the app.
-    with open('dxapp.json') as manifest:
-        parsed_manifest = json.load(manifest)
-        # TODO: check that manifest.buildDepends is an array of hashes
-        if 'buildDepends' in parsed_manifest:
-            depends = [dep['name'] for dep in parsed_manifest['buildDepends']]
-            print 'Installing the following packages specified in buildDepends: ' + ', '.join(depends)
-            cmd = ['sudo', 'apt-get', 'install', '--yes'] + depends
-            subprocess.check_call(cmd)
+    return os.path.join(checkout_dir, 'userapp')
 
-    # Override the API server host and port if requested.
-    env = dict(os.environ)
-    if target_apiserver_host:
-        env['DX_APISERVER_HOST'] = target_apiserver_host
-    if target_apiserver_port:
-        env['DX_APISERVER_PORT'] = target_apiserver_port
+@dxpy.entry_point('main')
+def main(repo_url, ref='master', credentials=None, publish=False):
 
-    os.chdir(checkout_dir)
-    cmd = ['dx-build-app', '--no-temp-build-project']
-    if publish:
-        cmd.extend(['--publish'])
-    cmd.extend(['userapp'])
-    subprocess.check_call(cmd, env=env)
+    clone_dir = clone_repository(repo_url, ref=ref, credentials=credentials)
+    for app_dir in app_builder.find_app_directories(clone_dir):
+        app_builder.create_app(app_dir, publish=publish)
 
     return {}
 

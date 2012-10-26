@@ -10,13 +10,14 @@
     {"name": "repo_url", "class": "string"},
     {"name": "ref", "class": "string", "optional": true},
     {"name": "credentials", "class": "file", "optional": true},
-    {"name": "target_apiserver_host", "class": "string", "optional": true},
-    {"name": "target_apiserver_port", "class": "int", "optional": true},
     {"name": "publish", "class": "boolean", "optional": true}
   ],
   "outputSpec": [
   ],
   "resources": [],
-  "version": "1.0.2",
-  "access": { "developer": true }
+  "version": "1.0.3",
+  "access": {
+    "developer": true,
+    "network": ["*"]
+  }
 }
