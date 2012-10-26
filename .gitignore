@@ -1,2 +1,3 @@
 *.pyc
 git_app_builder/resources/opt/pythonlibs/*.py
+tarball_app_builder/resources/opt/pythonlibs/*.py
