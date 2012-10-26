@@ -1,6 +1,6 @@
 {
   "name": "tarball_app_builder",
-  "title": "tarball App Builder",
+  "title": "Tarball App Builder",
   "summary": "Builds an app from a tarball",
   "description": "Builds your app from a .tar.gz File object.\n\nThe App Builder does the following:\n\n* Unpacks the input tarball\n* Builds with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting applet to DNAnexus and creates an app",
   "categories": [],
