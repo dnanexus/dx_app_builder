@@ -77,11 +77,15 @@ def clone_repository(repo_url, ref='master', credentials=None):
     return os.path.join(checkout_dir, 'userapp')
 
 @dxpy.entry_point('main')
-def main(repo_url, ref='master', credentials=None, publish=False):
+def main(repo_url, ref='master', credentials=None, recurse=False, publish=False):
 
     clone_dir = clone_repository(repo_url, ref=ref, credentials=credentials)
-    for app_dir in app_builder.find_app_directories(clone_dir):
-        app_builder.create_app(app_dir, publish=publish)
+
+    if recurse:
+        for app_dir in app_builder.find_app_directories(clone_dir):
+            app_builder.create_app(app_dir, publish=publish)
+    else:
+        app_builder.create_app(clone_dir, publish=publish)
 
     return {}
 
