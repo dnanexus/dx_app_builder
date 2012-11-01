@@ -11,6 +11,12 @@ def find_app_directories(root_dir):
         if "dxapp.json" in filenames:
             yield dirpath
 
+def package_atom(package_hash):
+    if 'version' in package_hash:
+        return package_hash['name'] + '=' + package_hash['version']
+    else:
+        return package_hash['name']
+
 def create_app(app_dir, publish=False):
 
     os.chdir(app_dir)
@@ -29,7 +35,7 @@ def create_app(app_dir, publish=False):
                 parsed_manifest['runSpec']['buildDepends'] = parsed_manifest['buildDepends']
 
         if 'runSpec' in parsed_manifest and 'buildDepends' in parsed_manifest['runSpec']:
-            depends = [dep['name'] for dep in parsed_manifest['runSpec']['buildDepends']]
+            depends = [package_atom(dep) for dep in parsed_manifest['runSpec']['buildDepends']]
             print 'Installing the following packages specified in buildDepends: ' + ', '.join(depends)
             cmd = ['sudo', 'apt-get', 'install', '--yes'] + depends
             subprocess.check_call(cmd)
