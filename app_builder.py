@@ -1,5 +1,6 @@
 import json
 import os
+import shlex
 import subprocess
 
 def find_app_directories(root_dir):
@@ -17,7 +18,7 @@ def package_atom(package_hash):
     else:
         return package_hash['name']
 
-def create_app(app_dir, publish=False):
+def create_app(app_dir, publish=False, extra_flags=""):
 
     os.chdir(app_dir)
 
@@ -43,5 +44,6 @@ def create_app(app_dir, publish=False):
     cmd = ['dx-build-app', '--no-temp-build-project']
     if publish:
         cmd.extend(['--publish'])
+    cmd.extend(shlex.split(extra_flags))
     cmd.extend(['.'])
     subprocess.check_call(cmd)

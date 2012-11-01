@@ -28,15 +28,15 @@ def unpack_tarball(input_tarball):
     return checkout_dir
 
 @dxpy.entry_point('main')
-def main(input_file, recurse=False, publish=False):
+def main(input_file, recurse=False, publish=False, extra_flags=""):
 
     unpack_dir = unpack_tarball(input_file)
 
     if recurse:
         for app_dir in app_builder.find_app_directories(unpack_dir):
-            app_builder.create_app(app_dir, publish=publish)
+            app_builder.create_app(app_dir, publish=publish, extra_flags=extra_flags)
     else:
-        app_builder.create_app(unpack_dir, publish=publish)
+        app_builder.create_app(unpack_dir, publish=publish, extra_flags=extra_flags)
 
     return {}
 

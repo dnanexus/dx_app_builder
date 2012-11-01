@@ -9,12 +9,13 @@
   "inputSpec": [
     {"name": "input_file", "class": "file"},
     {"name": "recurse", "class": "boolean", "optional": true},
-    {"name": "publish", "class": "boolean", "optional": true}
+    {"name": "publish", "class": "boolean", "optional": true},
+    {"name": "extra_flags", "class": "string", "optional": true}
   ],
   "outputSpec": [
   ],
   "resources": [],
-  "version": "1.0.2",
+  "version": "1.0.4",
   "access": {
     "developer": true
   }
