@@ -19,8 +19,17 @@ def create_app(app_dir, publish=False):
     with open('dxapp.json') as manifest:
         parsed_manifest = json.load(manifest)
         # TODO: check that manifest.buildDepends is an array of hashes
+
+        # TODO: Remove support for dxapp.buildDepends, left here for
+        # temporary compatibility
         if 'buildDepends' in parsed_manifest:
-            depends = [dep['name'] for dep in parsed_manifest['buildDepends']]
+            parsed_manifest['runSpec'] = parsed_manifest.get('runSpec', {})
+            if 'buildDepends' not in parsed_manifest['runSpec']:
+                print >> sys.stderr, "* buildDepends is deprecated, please set runSpec.buildDepends instead."
+                parsed_manifest['runSpec']['buildDepends'] = parsed_manifest['buildDepends']
+
+        if 'runSpec' in parsed_manifest and 'buildDepends' in parsed_manifest['runSpec']:
+            depends = [dep['name'] for dep in parsed_manifest['runSpec']['buildDepends']]
             print 'Installing the following packages specified in buildDepends: ' + ', '.join(depends)
             cmd = ['sudo', 'apt-get', 'install', '--yes'] + depends
             subprocess.check_call(cmd)
