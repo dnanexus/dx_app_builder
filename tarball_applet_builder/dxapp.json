@@ -11,7 +11,7 @@
     {"name": "extra_flags", "class": "string", "optional": true}
   ],
   "outputSpec": [
-    {"name": "output_applet", "class": "applet"},
+    {"name": "output_applet", "class": "applet"}
   ],
   "version": "1.0.0"
 }
