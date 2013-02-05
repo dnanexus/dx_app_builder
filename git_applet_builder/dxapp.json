@@ -1,0 +1,22 @@
+{
+  "name": "git_applet_builder",
+  "title": "git Applet Builder",
+  "summary": "Builds an applet from a git repo",
+  "description": "Builds your applet from a git repository.\n\nThe Applet Builder does the following:\n\n* Clones your source from a git repo, optionally using credentials specified by you\n* Builds with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting applet to DNAnexus and creates an applet",
+  "categories": [],
+  "dxapi": "1.0.0",
+  "runSpec": {"file": "git_applet_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "git"}, {"name": "build-essential"}]},
+  "inputSpec": [
+    {"name": "repo_url", "class": "string"},
+    {"name": "ref", "class": "string", "optional": true},
+    {"name": "credentials", "class": "file", "optional": true},
+    {"name": "extra_flags", "class": "string", "optional": true}
+  ],
+  "outputSpec": [
+    {"name": "output_applet", "class": "applet"}
+  ],
+  "version": "1.0.0",
+  "access": {
+    "network": ["*"]
+  }
+}
