@@ -1,7 +1,7 @@
 {
   "name": "tarball_applet_builder",
   "title": "Tarball Applet Builder",
-  "summary": "Builds an app from a tarball",
+  "summary": "Builds an applet from a tarball",
   "description": "Builds your applet from a .tar.gz File object.\n\nThe Applet Builder does the following:\n\n* Unpacks the input tarball\n* Builds with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting applet to DNAnexus and creates an applet",
   "categories": ["Debugging"],
   "dxapi": "1.0.0",
