@@ -19,7 +19,6 @@ def save_credentials(credentials):
     Saves credentials file to disk in a place where git/SSH will be able to
     find it.
     """
-    # TODO: ignore keys that are not among those we explicitly recognize.
     dot_ssh = os.path.expanduser("~/.ssh")
 
     try:
@@ -57,7 +56,10 @@ def clone_repository(repo_url, ref='master', credentials=None):
     # other).
     ssh_wrapper_filename = os.path.join(tempdir, 'ssh_wrapper')
     with open(ssh_wrapper_filename, 'w') as ssh_wrapper_outfile:
-        ssh_wrapper_outfile.write("#!/bin/sh\nssh -i" + ssh_id_filename() + " -oIdentitiesonly=yes -oStrictHostKeyChecking=no \"$@\"\n")
+        ssh_wrapper_outfile.write("#!/bin/sh\nssh")
+        if credentials:
+            ssh_wrapper_outfile.write(" -i" + ssh_id_filename())
+        ssh_wrapper_outfile.write(" -oIdentitiesonly=yes -oStrictHostKeyChecking=no \"$@\"\n")
     os.chmod(ssh_wrapper_filename, stat.S_IRUSR | stat.S_IXUSR)
     # TODO: preload known_hosts entry for github.com and maybe others,
     # or allow user to supply host signature for additional security
@@ -66,8 +68,7 @@ def clone_repository(repo_url, ref='master', credentials=None):
     os.mkdir(checkout_dir)
     os.chdir(checkout_dir)
     override_env = dict(os.environ)
-    if credentials:
-        override_env['GIT_SSH'] = ssh_wrapper_filename
+    override_env['GIT_SSH'] = ssh_wrapper_filename
     subprocess.check_call(['git', 'clone', repo_url, 'userapp'], env=override_env)
 
     os.chdir('userapp')
