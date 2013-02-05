@@ -7,12 +7,12 @@
   "dxapi": "1.0.0",
   "runSpec": {"file": "git_app_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "git"}, {"name": "build-essential"}]},
   "inputSpec": [
-    {"name": "repo_url", "class": "string"},
-    {"name": "ref", "class": "string", "optional": true},
-    {"name": "credentials", "class": "file", "optional": true},
-    {"name": "recurse", "class": "boolean", "optional": true},
-    {"name": "publish", "class": "boolean", "optional": true},
-    {"name": "extra_flags", "class": "string", "optional": true}
+    {"name": "repo_url", "class": "string", "label": "git URL", "help": "URL of git repo to be cloned"},
+    {"name": "ref", "class": "string", "optional": true, "label": "Ref to build", "help": "Branch, tag, or commit ID to be checked out"},
+    {"name": "credentials", "class": "file", "optional": true, "label": "Private key file", "help": "File containing private key to use to authenticate to the git server"},
+    {"name": "recurse", "class": "boolean", "optional": true, "label": "Recurse?", "help": "If true, runs dx-build-app from every subdirectory that has a dxapp.json file in it"},
+    {"name": "publish", "class": "boolean", "optional": true, "label": "Publish?", "help": "If true, publishes the resulting app(s)"},
+    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-app", "help": "Any extra flags to be added to the dx-build-app call"}
   ],
   "outputSpec": [
   ],

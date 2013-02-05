@@ -7,10 +7,10 @@
   "dxapi": "1.0.0",
   "runSpec": {"file": "tarball_app_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "build-essential"}]},
   "inputSpec": [
-    {"name": "input_file", "class": "file"},
-    {"name": "recurse", "class": "boolean", "optional": true},
-    {"name": "publish", "class": "boolean", "optional": true},
-    {"name": "extra_flags", "class": "string", "optional": true}
+    {"name": "input_file", "class": "file", "label": "Input File", "help": "A .tar.gz file containing DNAnexus app source code"},
+    {"name": "recurse", "class": "boolean", "optional": true, "label": "Recurse?", "help": "If true, runs dx-build-app from every subdirectory that has a dxapp.json file in it"},
+    {"name": "publish", "class": "boolean", "optional": true, "label": "Publish?", "help": "If true, publishes the resulting app(s)"},
+    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-app", "help": "Any extra flags to be added to the dx-build-app call"}
   ],
   "outputSpec": [
   ],

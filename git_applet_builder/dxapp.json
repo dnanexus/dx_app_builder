@@ -7,13 +7,13 @@
   "dxapi": "1.0.0",
   "runSpec": {"file": "git_applet_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "git"}, {"name": "build-essential"}]},
   "inputSpec": [
-    {"name": "repo_url", "class": "string"},
-    {"name": "ref", "class": "string", "optional": true},
-    {"name": "credentials", "class": "file", "optional": true},
-    {"name": "extra_flags", "class": "string", "optional": true}
+    {"name": "repo_url", "class": "string", "label": "git URL", "help": "URL of git repo to be cloned"},
+    {"name": "ref", "class": "string", "optional": true, "label": "Ref to build", "help": "Branch, tag, or commit ID to be checked out"},
+    {"name": "credentials", "class": "file", "optional": true, "label": "Private key file", "help": "File containing private key to use to authenticate to the git server"},
+    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-applet", "help": "Any extra flags to be added to the dx-build-applet call"}
   ],
   "outputSpec": [
-    {"name": "output_applet", "class": "applet"}
+    {"name": "output_applet", "class": "applet", "label": "Output applet"}
   ],
   "version": "1.0.0",
   "access": {
