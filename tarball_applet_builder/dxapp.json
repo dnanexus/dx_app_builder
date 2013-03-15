@@ -8,10 +8,11 @@
   "runSpec": {"file": "tarball_applet_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "build-essential"}]},
   "inputSpec": [
     {"name": "input_file", "class": "file", "label": "Input File", "help": "A .tar.gz file containing DNAnexus app source code"},
-    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-applet", "help": "Any extra flags to be added to the dx-build-applet call"}
+    {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"},
+    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-applet (deprecated)", "help": "Any extra flags to be added to the dx-build-applet call"}
   ],
   "outputSpec": [
     {"name": "output_applet", "class": "applet", "label": "Output applet"}
   ],
-  "version": "1.0.5"
+  "version": "1.0.6"
 }

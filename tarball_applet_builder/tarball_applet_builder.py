@@ -24,11 +24,11 @@ sys.path.append('/opt/pythonlibs')
 import app_builder
 
 @dxpy.entry_point('main')
-def main(input_file, extra_flags=""):
+def main(input_file, build_options=None, extra_flags=""):
 
     unpack_dir = app_builder.unpack_tarball(input_file)
 
-    applet_id = app_builder.create_applet(unpack_dir, extra_flags=extra_flags)
+    applet_id = app_builder.create_applet(unpack_dir, build_options=build_options, extra_flags=extra_flags)
 
     return { 'output_applet': dxpy.dxlink(applet_id) }
 

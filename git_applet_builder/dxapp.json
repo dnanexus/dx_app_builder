@@ -10,7 +10,8 @@
     {"name": "repo_url", "class": "string", "label": "git URL", "help": "URL of git repo to be cloned"},
     {"name": "ref", "class": "string", "optional": true, "label": "Ref to build", "help": "Branch, tag, or commit ID to be checked out"},
     {"name": "credentials", "class": "file", "optional": true, "label": "Private key file", "help": "File containing private key to use to authenticate to the git server"},
-    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-applet", "help": "Any extra flags to be added to the dx-build-applet call"}
+    {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"},
+    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-applet (deprecated)", "help": "Any extra flags to be added to the dx-build-applet call"}
   ],
   "outputSpec": [
     {"name": "output_applet", "class": "applet", "label": "Output applet"}

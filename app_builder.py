@@ -23,6 +23,7 @@ import sys
 import tempfile
 
 import dxpy
+from dxpy.scripts import dx_build_app
 
 # === git ===
 
@@ -153,32 +154,53 @@ def install_app_depends(app_dir):
             cmd = ['sudo', 'apt-get', 'install', '--yes'] + depends
             subprocess.check_call(cmd)
 
-def create_app(app_dir, publish=False, extra_flags=""):
+def create_app(app_dir, publish=False, build_options=None, extra_flags=""):
     """
     Runs dx-build-app on the specified directory.
     """
     os.chdir(app_dir)
     install_app_depends(app_dir)
 
-    cmd = ['dx-build-app', '--no-temp-build-project']
-    if publish:
-        cmd.extend(['--publish'])
-    cmd.extend(shlex.split(extra_flags))
-    cmd.extend(['.'])
-    subprocess.check_call(cmd)
+    if not build_options:
+        build_options = {}
 
-def create_applet(app_dir, extra_flags=""):
+    if not extra_flags:
+        dx_build_app.build_and_upload_locally('.', mode='app', use_temp_build_project=False, publish=publish, **build_options)
+        return
+
+    # Older dx-toolkit will supply extra_flags instead of build_options.
+    # We're not able to run the build in process, which means
+    # harder-to-decipher error messages.
+    args = ['--no-temp-build-project']
+    if publish:
+        args.extend(['--publish'])
+    args.extend(shlex.split(extra_flags))
+    args.extend(['.'])
+
+    sys.argv = [sys.argv[0]] + args
+    dx_build_app.main()
+
+def create_applet(app_dir, build_options=None, extra_flags=""):
     """
     Runs dx-build-applet on the specified directory.
     """
     os.chdir(app_dir)
     install_app_depends(app_dir)
 
+    if not build_options:
+        build_options = {}
+
     # Build only
-    cmd = ['dx-build-applet', '--no-upload-step', '.']
-    subprocess.check_call(cmd)
+    dx_build_app.build_and_upload_locally('.', mode='applet', do_upload_step=False)
 
     # Upload only
+    if not extra_flags:
+        output = dx_build_app.build_and_upload_locally('.', mode='applet', do_build_step=False, return_object_dump=True, **build_options)
+        return output['id']
+
+    # Older dx-toolkit will supply extra_flags instead of build_options.
+    # We're not able to run the build in process, which means
+    # harder-to-decipher error messages.
     cmd = ['dx-build-applet']
     cmd.extend(shlex.split(extra_flags))
     cmd.extend(['--no-build-step', '--json', '.'])

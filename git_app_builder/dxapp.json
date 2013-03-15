@@ -12,7 +12,8 @@
     {"name": "credentials", "class": "file", "optional": true, "label": "Private key file", "help": "File containing private key to use to authenticate to the git server"},
     {"name": "recurse", "class": "boolean", "optional": true, "label": "Recurse?", "help": "If true, runs dx-build-app from every subdirectory that has a dxapp.json file in it"},
     {"name": "publish", "class": "boolean", "optional": true, "label": "Publish?", "help": "If true, publishes the resulting app(s)"},
-    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-app", "help": "Any extra flags to be added to the dx-build-app call"}
+    {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"},
+    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-app (deprecated)", "help": "Any extra flags to be added to the dx-build-app call"}
   ],
   "outputSpec": [
   ],
