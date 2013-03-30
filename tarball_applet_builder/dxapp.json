@@ -14,5 +14,8 @@
   "outputSpec": [
     {"name": "output_applet", "class": "applet", "label": "Output applet"}
   ],
-  "version": "1.0.6"
+  "version": "1.0.7",
+  "access": {
+    "network": ["*"]
+  }
 }
