@@ -112,7 +112,7 @@ def unpack_tarball(input_tarball):
     checkout_dir = os.path.join(tempdir, "unpackdest")
     os.mkdir(checkout_dir)
 
-    subprocess.check_call(['tar', '-xzf', tarball_filename, '-C', checkout_dir])
+    subprocess.check_call(['tar', '-xzf', tarball_filename, '-C', checkout_dir, '--warning=no-timestamp'])
 
     return checkout_dir
 
