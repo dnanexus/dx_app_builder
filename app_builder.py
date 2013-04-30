@@ -114,6 +114,17 @@ def unpack_tarball(input_tarball):
 
     subprocess.check_call(['tar', '-xzf', tarball_filename, '-C', checkout_dir, '--warning=no-timestamp'])
 
+    # TODO: instead of guessing the directory name to be a name that
+    # generates no warnings, have the client send the directory name
+    # that was used on its end.
+    try:
+        appname = json.load(open(os.path.join(tempdir, "unpackdest", "dxapp.json"))).get("name", "unpackdest")
+        if appname != "unpackdest":
+            os.rename(os.path.join(tempdir, "unpackdest"), os.path.join(tempdir, appname))
+            checkout_dir = os.path.join(tempdir, appname)
+    except:
+        pass
+
     return checkout_dir
 
 # === general app build ===
