@@ -17,7 +17,7 @@
   ],
   "outputSpec": [
   ],
-  "version": "1.0.7",
+  "version": "1.0.8",
   "access": {
     "developer": true,
     "network": ["*"]
