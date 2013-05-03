@@ -162,7 +162,6 @@ def install_app_depends(app_dir):
         if 'runSpec' in parsed_manifest and 'buildDepends' in parsed_manifest['runSpec']:
             depends = [package_atom(dep) for dep in parsed_manifest['runSpec']['buildDepends']]
             print 'Installing the following packages specified in buildDepends: ' + ', '.join(depends)
-            subprocess.check_call(['sudo', 'apt-get', 'update', '-qq'])
             cmd = ['sudo', 'apt-get', 'install', '--yes'] + depends
             subprocess.check_call(cmd)
 
