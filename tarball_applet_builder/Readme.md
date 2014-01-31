@@ -1,4 +1,4 @@
-**This is a low-level app. Consider using \"dx build --remote\" instead, which calls this app internally.**
+**This is a low-level app. Consider using "dx build --remote" instead, which calls this app internally.**
 
 Builds your applet from a .tar.gz File object.
 

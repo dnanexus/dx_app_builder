@@ -12,7 +12,7 @@
   "outputSpec": [
     {"name": "output_applet", "class": "applet", "label": "Output applet"}
   ],
-  "version": "1.0.12",
+  "version": "1.0.13",
   "access": {
     "network": ["*"]
   }
