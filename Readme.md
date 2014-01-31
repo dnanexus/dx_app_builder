@@ -4,8 +4,8 @@ App(let) Builder Apps
 The apps in this repository take as input a reference to the source code for a
 DNAnexus app and build an app or applet. These apps may be useful for
 developing apps if you don't have an Ubuntu 12.04 machine easily accessible.
-(Also see the frontends ``dx-build-app --remote`` or ``dx-build-applet
---remote``, which tar up your working directory and automatically invoke
+(Also see the frontends ``dx build --app --remote`` or ``dx build --remote``,
+which tar up your working directory and automatically invoke
 ``tarball_app_builder`` and ``tarball_applet_builder`` respectively.)
 
 There are four apps here, each with different I/O specs:

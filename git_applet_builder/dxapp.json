@@ -2,7 +2,6 @@
   "name": "git_applet_builder",
   "title": "git Applet Builder",
   "summary": "Builds an applet from a git repo",
-  "description": "Builds your applet from a git repository.\n\nThe Applet Builder does the following:\n\n* Clones your source from a git repo, optionally using credentials specified by you\n* Builds with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting applet to DNAnexus",
   "categories": ["Debugging"],
   "dxapi": "1.0.0",
   "runSpec": {"file": "git_applet_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "git"}, {"name": "build-essential"}]},
@@ -10,13 +9,12 @@
     {"name": "repo_url", "class": "string", "label": "git URL", "help": "URL of git repo to be cloned"},
     {"name": "ref", "class": "string", "optional": true, "label": "Ref to build", "help": "Branch, tag, or commit ID to be checked out"},
     {"name": "credentials", "class": "file", "optional": true, "label": "Private key file", "help": "File containing private key to use to authenticate to the git server"},
-    {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"},
-    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-applet (deprecated)", "help": "Any extra flags to be added to the dx-build-applet call"}
+    {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"}
   ],
   "outputSpec": [
     {"name": "output_applet", "class": "applet", "label": "Output applet"}
   ],
-  "version": "1.0.11",
+  "version": "1.0.12",
   "access": {
     "network": ["*"]
   }

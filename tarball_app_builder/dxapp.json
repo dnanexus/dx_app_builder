@@ -2,7 +2,6 @@
   "name": "tarball_app_builder",
   "title": "Tarball App Builder",
   "summary": "Builds an app from a tarball",
-  "description": "**This is a low-level app. Consider using \"dx-build-app --remote\" instead, which calls this app internally.**\n\nBuilds your app from a .tar.gz File object.\n\nThe App Builder does the following:\n\n* Unpacks the input tarball\n* Builds with `./configure` and `make && make install` (optional; only run if a `./configure` file and a makefile are found, respectively)\n* Uploads the resulting applet to DNAnexus and creates an app",
   "categories": ["Debugging"],
   "dxapi": "1.0.0",
   "runSpec": {"file": "tarball_app_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "build-essential"}]},
@@ -10,12 +9,11 @@
     {"name": "input_file", "class": "file", "label": "Input File", "help": "A .tar.gz file containing DNAnexus app source code"},
     {"name": "recurse", "class": "boolean", "optional": true, "label": "Recurse?", "help": "If true, runs dx-build-app from every subdirectory that has a dxapp.json file in it"},
     {"name": "publish", "class": "boolean", "optional": true, "label": "Publish?", "help": "If true, publishes the resulting app(s)"},
-    {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"},
-    {"name": "extra_flags", "class": "string", "optional": true, "label": "Extra flags for dx-build-app (deprecated)", "help": "Any extra flags to be added to the dx-build-app call"}
+    {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"}
   ],
   "outputSpec": [
   ],
-  "version": "1.0.11",
+  "version": "1.0.12",
   "access": {
     "developer": true,
     "network": ["*"]

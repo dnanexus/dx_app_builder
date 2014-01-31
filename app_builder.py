@@ -16,7 +16,6 @@
 
 import json
 import os
-import shlex
 import stat
 import subprocess
 import sys
@@ -165,7 +164,7 @@ def install_app_depends(app_dir):
             cmd = ['sudo', 'apt-get', 'install', '--yes'] + depends
             subprocess.check_call(cmd)
 
-def create_app(app_dir, publish=False, build_options=None, extra_flags=""):
+def create_app(app_dir, publish=False, build_options=None):
     """
     Runs dx-build-app on the specified directory.
     """
@@ -175,23 +174,9 @@ def create_app(app_dir, publish=False, build_options=None, extra_flags=""):
     if not build_options:
         build_options = {}
 
-    if not extra_flags:
-        dx_build_app.build_and_upload_locally('.', mode='app', use_temp_build_project=False, publish=publish, **build_options)
-        return
+    dx_build_app.build_and_upload_locally('.', mode='app', use_temp_build_project=False, publish=publish, **build_options)
 
-    # Older dx-toolkit will supply extra_flags instead of build_options.
-    # We're not able to run the build in process, which means
-    # harder-to-decipher error messages.
-    args = ['--no-temp-build-project']
-    if publish:
-        args.extend(['--publish'])
-    args.extend(shlex.split(extra_flags))
-    args.extend(['.'])
-
-    sys.argv = [sys.argv[0]] + args
-    dx_build_app.main()
-
-def create_applet(app_dir, build_options=None, extra_flags=""):
+def create_applet(app_dir, build_options=None):
     """
     Runs dx-build-applet on the specified directory.
     """
@@ -201,19 +186,5 @@ def create_applet(app_dir, build_options=None, extra_flags=""):
     if not build_options:
         build_options = {}
 
-    # Build only
-    dx_build_app.build_and_upload_locally('.', mode='applet', do_upload_step=False)
-
-    # Upload only
-    if not extra_flags:
-        output = dx_build_app.build_and_upload_locally('.', mode='applet', do_build_step=False, return_object_dump=True, **build_options)
-        return output['id']
-
-    # Older dx-toolkit will supply extra_flags instead of build_options.
-    # We're not able to run the build in process, which means
-    # harder-to-decipher error messages.
-    cmd = ['dx-build-applet']
-    cmd.extend(shlex.split(extra_flags))
-    cmd.extend(['--no-build-step', '--json', '.'])
-    output = subprocess.check_output(cmd)
-    return json.loads(output)['id']
+    output = dx_build_app.build_and_upload_locally('.', mode='applet', return_object_dump=True, **build_options)
+    return output['id']

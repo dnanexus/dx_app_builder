@@ -20,11 +20,11 @@ sys.path.append('/opt/pythonlibs')
 import app_builder
 
 @dxpy.entry_point('main')
-def main(repo_url, ref='master', credentials=None, build_options=None, extra_flags=""):
+def main(repo_url, ref='master', credentials=None, build_options=None):
 
     clone_dir = app_builder.clone_repository(repo_url, ref=ref, credentials=credentials)
 
-    applet_id = app_builder.create_applet(clone_dir, build_options=build_options, extra_flags=extra_flags)
+    applet_id = app_builder.create_applet(clone_dir, build_options=build_options)
 
     return { 'output_applet': dxpy.dxlink(applet_id) }
 
