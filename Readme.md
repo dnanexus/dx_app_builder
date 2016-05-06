@@ -22,6 +22,8 @@ There are four apps here, each with different I/O specs:
 * `tarball_applet_builder`: takes a reference to a tarball containing the code
   to be compiled; returns an applet
 
+More info: http://wiki.dnanexus.com/Developer-Tutorials/App-Build-Process
+
 Asset Builder Apps
 ------------------
 
@@ -38,3 +40,5 @@ the build procedure are packed into the asset.
 
 * `create_asset_precise`: builds an asset targeting Ubuntu 12.04
 * `create_asset_trusty`: builds an asset targeting Ubuntu 14.04
+
+More info: https://wiki.dnanexus.com/Developer-Tutorials/Asset-Build-Process
