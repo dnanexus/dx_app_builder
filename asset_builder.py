@@ -23,6 +23,7 @@ import random
 import time
 import json
 import sys
+import re
 import dxpy
 from dxpy.utils.exec_utils import DXExecDependencyInstaller
 
@@ -145,8 +146,8 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
     print >> sys.stderr, "Preparing the list of new and updated files after the installation."
     get_file_diffs(before_file_path_sort, after_file_path_sort, diff_file_path)
 
-    tar_output = conf_data["name"] + ".tar.gz"
-    print >> sys.stderr, "Creating the tarball of files listed in: " + diff_file_path
+    tar_output = re.sub(r"\s+", '-', conf_data["name"]) + ".tar.gz"
+    print >> sys.stderr, "Creating the tarball '" + tar_output + "' of files listed in: " + diff_file_path
     tar_cmd = ["sudo", "tar", "-Pczf", tar_output, "-T", diff_file_path]
     subprocess.check_call(tar_cmd)
 
