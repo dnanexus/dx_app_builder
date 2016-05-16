@@ -3,7 +3,7 @@
   "title": "Create asset bundle for Ubuntu 12.04",
   "summary": "Creates an asset bundle targeted for apps/applets running on Ubuntu 12.04",
   "dxapi": "1.0.0",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "categories": [],
   "inputSpec": [
     {
