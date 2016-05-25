@@ -151,14 +151,19 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
     # in them
     tar_output = re.sub(r"\s+", '-', conf_data["name"]) + ".tar.gz"
     print >> sys.stderr, "Creating the tarball '" + tar_output + "' of files listed in: " + diff_file_path
-    tar_cmd = ["sudo", "tar", "-Pczf", tar_output, "-T", diff_file_path]
-    subprocess.check_call(tar_cmd)
+    tar_cmd = ["tar", "-Pcz", "--no-recursion", "-T", diff_file_path, "-f", "-"]
 
-    asset_bundle_output = dxpy.upload_local_file(tar_output, wait_on_close=True, hidden=True)
+    tar_ps = subprocess.Popen(tar_cmd, stdout=subprocess.PIPE)
+    upload_ps = subprocess.Popen(["dx", "upload", "-", "--wait", "--brief", "-o", tar_output,
+                                  "--visibility", "hidden"], stdin=tar_ps.stdout, stdout=subprocess.PIPE)
+    tar_ps.stdout.close()
+    asset_tarball_id = upload_ps.communicate()[0].rstrip()
+    tar_ps.wait()
+    upload_ps.stdout.close()
 
     # Create a record object referring to this hidden file
     record_name = conf_data["name"]
-    record_details = {"archiveFileId": {"$dnanexus_link": asset_bundle_output.get_id()}}
+    record_details = {"archiveFileId": {"$dnanexus_link": asset_tarball_id}}
     record_properties = {
                           "title": conf_data["title"],
                           "description": conf_data["description"],

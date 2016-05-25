@@ -13,6 +13,7 @@ This applet creates bundled libraries based on the user inputs targeted to Ubunt
   "version": "0.0.1",
   "release": "12.04",
   "distribution": "Ubuntu",
+  "instanceType": "mem2_ssd1_x4",
   "excludeResource": ["/src/mycode.cpp","/src/scripts"],
   "execDepends": [
     {"name": "samtools", "package_manager": "apt"},
