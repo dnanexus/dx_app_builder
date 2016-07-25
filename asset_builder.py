@@ -30,7 +30,8 @@ from dxpy.utils.exec_utils import DXExecDependencyInstaller
 
 def install_run_spec(exec_depends):
     run_spec = {"runSpec": {"execDepends": exec_depends}}
-    dx_installer = DXExecDependencyInstaller(run_spec, {})
+    job_desc = dxpy.get_handler(dxpy.JOB_ID).describe()
+    dx_installer = DXExecDependencyInstaller(run_spec, job_desc)
     dx_installer.install()
 
 
