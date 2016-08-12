@@ -126,13 +126,13 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
     print >> sys.stderr, "Preparing the list of files in the system before installing any library."
     get_system_snapshot(before_file_path_sort, ignore_dir)
 
-    if "execDepends" in conf_data:
-        print >> sys.stderr, "Installing execDepends."
-        install_run_spec(conf_data['execDepends'])
-
     if custom_asset_fh is not None:
         print >> sys.stderr, "Installing custom resources given by the user in the tarball."
         subprocess.call(["sudo", "tar", "-xzf", custom_assetfile_path, "-C", "/"])
+
+    if "execDepends" in conf_data:
+        print >> sys.stderr, "Installing execDepends."
+        install_run_spec(conf_data['execDepends'])
 
     if asset_makefile_fh is not None:
         print >> sys.stderr, "Running make."
@@ -156,7 +156,8 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
 
     tar_ps = subprocess.Popen(tar_cmd, stdout=subprocess.PIPE)
     upload_ps = subprocess.Popen(["dx", "upload", "-", "--wait", "--brief", "-o", tar_output,
-                                  "--visibility", "hidden"], stdin=tar_ps.stdout, stdout=subprocess.PIPE)
+                                  "--visibility", "hidden"],
+                                  stdin=tar_ps.stdout, stdout=subprocess.PIPE)
     tar_ps.stdout.close()
     asset_tarball_id = upload_ps.communicate()[0].rstrip()
     tar_ps.wait()
@@ -175,6 +176,10 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
     asset_bundle = dxpy.new_dxrecord(name=record_name,
                                      types=["AssetBundle"], details=record_details,
                                      properties=record_properties, close=True)
+
+    # Add a property called {"AssetBundle": record-xxx} to the hidden tarball
+    asset_file = dxpy.DXFile(asset_tarball_id)
+    asset_file.set_properties({"AssetBundle": asset_bundle.get_id()})
 
     print >> sys.stderr, "\n'" + record_name + "' asset bundle created!\n"
 
