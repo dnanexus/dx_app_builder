@@ -1,4 +1,4 @@
-# Copyright (C) 2013 DNAnexus, Inc.
+# Copyright (C) 2016 DNAnexus, Inc.
 #
 # This file is part of dx_app_builder.
 #
@@ -21,17 +21,12 @@ sys.path.append('/opt/pythonlibs')
 import app_builder
 
 @dxpy.entry_point('main')
-def main(input_file, recurse=False, publish=False, build_options=None):
+def main(input_file, build_options=None):
 
     unpack_dir = app_builder.unpack_tarball(input_file)
 
-    if recurse:
-        for app_dir in app_builder.find_app_directories(unpack_dir):
-            app_builder.create_app(app_dir, publish=publish, build_options=build_options)
-    else:
-        app_builder.create_app(unpack_dir, publish=publish, build_options=build_options)
+    applet_id = app_builder.create_applet(unpack_dir, build_options=build_options)
 
-    return {}
-
+    return { 'output_applet': dxpy.dxlink(applet_id) }
 
 dxpy.run()
