@@ -1,6 +1,6 @@
 **This is a low-level app. Consider using "dx build --app --remote" instead, which calls this app internally.**
 
-Builds your app from a .tar.gz File object.
+Builds your app from a .tar.gz File object on an Ubuntu 14.04 environment.
 
 The App Builder does the following:
 

@@ -1,6 +1,6 @@
 **This is a low-level app. Consider using "dx build --remote" instead, which calls this app internally.**
 
-Builds your applet from a .tar.gz File object.
+Builds your applet from a .tar.gz File object on an Ubuntu 14.04 environment
 
 The Applet Builder does the following:
 
