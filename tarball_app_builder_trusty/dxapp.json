@@ -1,0 +1,22 @@
+{
+  "name": "tarball_app_builder_trusty",
+  "title": "Tarball App Builder (Trusty)",
+  "summary": "Builds an app from a tarball",
+  "categories": ["Debugging"],
+  "dxapi": "1.0.0",
+  "runSpec": {"file": "tarball_app_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "build-essential"}], "distribution": "Ubuntu", "release": "14.04", "systemRequirements": {"*": {"instanceType": "mem1_ssd1_x2"}}},
+  "inputSpec": [
+    {"name": "input_file", "class": "file", "label": "Input File", "help": "A .tar.gz file containing DNAnexus app source code"},
+    {"name": "recurse", "class": "boolean", "optional": true, "label": "Recurse?", "help": "If true, runs dx-build-app from every subdirectory that has a dxapp.json file in it"},
+    {"name": "publish", "class": "boolean", "optional": true, "label": "Publish?", "help": "If true, publishes the resulting app(s)"},
+    {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"}
+  ],
+  "outputSpec": [
+  ],
+  "version": "1.0.14",
+  "openSource": true,
+  "access": {
+    "developer": true,
+    "network": ["*"]
+  }
+}

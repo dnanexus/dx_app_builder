@@ -16,4 +16,4 @@
 
 all:
 	cp ../app_builder.py resources/opt/pythonlibs
-	cp ../tarball_app_builder.py .
+	cp ../tarball_applet_builder.py .

@@ -14,6 +14,24 @@
 #   License for the specific language governing permissions and limitations
 #   under the License.
 
-all:
-	cp ../app_builder.py resources/opt/pythonlibs
-	cp ../tarball_app_builder.py .
+import dxpy
+import sys
+
+sys.path.append('/opt/pythonlibs')
+import app_builder
+
+@dxpy.entry_point('main')
+def main(input_file, recurse=False, publish=False, build_options=None):
+
+    unpack_dir = app_builder.unpack_tarball(input_file)
+
+    if recurse:
+        for app_dir in app_builder.find_app_directories(unpack_dir):
+            app_builder.create_app(app_dir, publish=publish, build_options=build_options)
+    else:
+        app_builder.create_app(unpack_dir, publish=publish, build_options=build_options)
+
+    return {}
+
+
+dxpy.run()

@@ -17,10 +17,10 @@ There are four apps here, each with different I/O specs:
   app
 * `git_applet_builder`: takes a string containing a git repository path;
   returns an applet
-* `tarball_app_builder`: takes a reference to a tarball containing the code to
-  be compiled; builds an app
-* `tarball_applet_builder`: takes a reference to a tarball containing the code
-  to be compiled; returns an applet
+* `tarball_app_builder[_trusty]`: takes a reference to a tarball containing the code to
+  be compiled; builds an app [in an Ubuntu 14.04 environment]
+* `tarball_applet_builder[_trusty]`: takes a reference to a tarball containing the code
+  to be compiled; returns an applet [in an Ubuntu 14.04 environment]
 
 More info: http://wiki.dnanexus.com/Developer-Tutorials/App-Build-Process
 
