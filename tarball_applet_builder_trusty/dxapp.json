@@ -16,5 +16,6 @@
   "openSource": true,
   "access": {
     "network": ["*"]
-  }
+  },
+  "authorizedUsers": ["PUBLIC"]
 }
