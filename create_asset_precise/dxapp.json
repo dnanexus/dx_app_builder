@@ -36,11 +36,6 @@
   "runSpec": {
     "interpreter": "python2.7",
     "file": "create_asset_precise.py",
-    "systemRequirements": {
-      "*": {
-        "instanceType": "mem2_ssd1_x4"
-      }
-    },
     "distribution": "Ubuntu",
     "release": "12.04"
   },
