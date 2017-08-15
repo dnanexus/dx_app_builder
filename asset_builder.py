@@ -128,7 +128,7 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
 
     if custom_asset_fh is not None:
         print >> sys.stderr, "Installing custom resources given by the user in the tarball."
-        subprocess.check_call(["sudo", "tar", "-xzf", custom_assetfilepath, '--no-same-owner', "-C", "/"])
+        subprocess.check_call(["sudo", "tar", "-xzf", custom_assetfile_path, '--no-same-owner', "-C", "/"])
 
     if "execDepends" in conf_data:
         print >> sys.stderr, "Installing execDepends."
