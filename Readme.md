@@ -6,7 +6,7 @@ App(let) Builder Apps
 
 These apps take as input a reference to the source code for a DNAnexus app and
 build an app or applet. These apps may be useful for developing apps if you
-don't have an Ubuntu 12.04 machine easily accessible. (Also see the frontends
+don't have an Ubuntu 12.04 or 14.04 machine easily accessible. (Also see the frontends
 `dx build --app --remote` or `dx build --remote`, which tar up your working
 directory and automatically invoke `tarball_app_builder` and
 `tarball_applet_builder` respectively.)
@@ -14,9 +14,9 @@ directory and automatically invoke `tarball_app_builder` and
 There are four apps here, each with different I/O specs:
 
 * `git_app_builder`: takes a string containing a git repository path; builds an
-  app
+  app in an Ubuntu 14.04 environment
 * `git_applet_builder`: takes a string containing a git repository path;
-  returns an applet
+  returns an applet in an Ubuntu 14.04 environment
 * `tarball_app_builder[_trusty]`: takes a reference to a tarball containing the code to
   be compiled; builds an app [in an Ubuntu 14.04 environment]
 * `tarball_applet_builder[_trusty]`: takes a reference to a tarball containing the code

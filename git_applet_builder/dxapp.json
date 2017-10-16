@@ -4,7 +4,7 @@
   "summary": "Builds an applet from a git repo",
   "categories": ["Debugging"],
   "dxapi": "1.0.0",
-  "runSpec": {"file": "git_applet_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "git"}, {"name": "build-essential"}]},
+  "runSpec": {"file": "git_applet_builder.py", "interpreter": "python2.7", "distribution": "Ubuntu", "release": "14.04", "execDepends": [{"name": "git"}, {"name": "build-essential"}]},
   "inputSpec": [
     {"name": "repo_url", "class": "string", "label": "git URL", "help": "URL of git repo to be cloned"},
     {"name": "ref", "class": "string", "optional": true, "label": "Ref to build", "help": "Branch, tag, or commit ID to be checked out"},
