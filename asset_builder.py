@@ -134,11 +134,19 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
         print >> sys.stderr, "Installing execDepends."
         install_run_spec(conf_data['execDepends'])
 
+    # when running make, grab the output and err before raising error
     if asset_makefile_fh is not None:
         print >> sys.stderr, "Running make."
         mk_cmd = ["sudo", "make", "-C", os.getcwd()]
-        subprocess.check_output(mk_cmd)
-
+        process = subprocess.Popen(mk_cmd, stdout=subprocess.PIPE)
+        output, err = process.communicate()
+        retcode = process.poll()
+        if retcode:
+            cmd = mk_cmd
+            print >> sys.stdout, output
+            print >> sys.stderr, err
+            raise subprocess.CalledProcessError(retcode, cmd, output=output)
+    
     after_file_path_sort = tempfile.gettempdir() + '/after-sorted.txt'
     print >> sys.stderr, "Preparing the list of files in the system after installing user libraries."
     get_system_snapshot(after_file_path_sort, ignore_dir)
