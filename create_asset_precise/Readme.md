@@ -6,6 +6,7 @@ This applet creates bundled libraries based on the user inputs targeted to Ubunt
 
 * Mandatory: A json file in the following format
 
+```
 {
   "name": "asset_library_name",
   "title": "A human readable name",
@@ -23,6 +24,7 @@ This applet creates bundled libraries based on the user inputs targeted to Ubunt
     {"name": "Bio::SeqIO", "package_manager": "cpan", "version": "1.006924"}
   ]
 }
+```
 
 * Optional: A Makefile that will be executed from the workers home directory before packaging and producing the final asset bundle.
 
