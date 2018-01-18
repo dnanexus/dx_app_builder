@@ -10,7 +10,7 @@ Assume that we have applet `A` (applet-xxxx) that takes the input hash:
     a: file,
     b: int (optional),
     c: string,
-    d: file:array
+    d: array:file
 }
 ```
 
@@ -31,32 +31,35 @@ We want to launch `A` in parallel, on three sets of inputs:
 | file-cccc | 4  | "foo" | [file-zzzz, file-yyyy] |
 
 We split the inputs to those that change between invocations
-(*batch-inputs*), and those that remain fixed (*common-inputs*).
+(*batch_inputs*), and those that remain fixed (*common_inputs*).
 Then, we call the scatter app with:
 ```
 {
-executable: applet-xxxx,
-batch-inputs:
-  { a: [file-aaaa, file-bbbb, file-cccc]
-    b: [1, null, 4] },
-common-inputs:
-  { c: "foo",
-    d: [file-yyyy, file-zzzz]},
-files: [file-aaaa, file-bbbb, file-cccc, file-yyyy, file-zzzz]
+  executable: applet-xxxx,
+  batch_inputs: {
+    a: [file-aaaa, file-bbbb, file-cccc]
+    b: [1, null, 4]
+  },
+  common_inputs: {
+    c: "foo",
+    d: [file-yyyy, file-zzzz]
+  },
+  files: [file-aaaa, file-bbbb, file-cccc, file-yyyy, file-zzzz]
 }
 ```
 
 The outputs are:
 ```
 {
-launch_args: {
-   { a: file-aaaa, b: 1, c: "foo", d: [file-zzzz, file-yyyy]
-   { a: file-bbbb, c: "foo", d: [file-zzzz, file-yyyy] }
+  launch_args: {
+   { a: file-aaaa, b: 1, c: "foo", d: [file-zzzz, file-yyyy] }
+   { a: file-bbbb,       c: "foo", d: [file-zzzz, file-yyyy] }
    { a: file-cccc, b: 4, c: "foo", d: [file-zzzz, file-yyyy] }
+  },
 
   results: {
-    h : file:array
-    g : int:array
+    h : [file-uuuu, file-vvvv, file-wwww],
+    g : [5, 9, 11]
   }
 }
 ```
@@ -64,13 +67,13 @@ launch_args: {
 ## Scatter app inputs
 - executable: `app-xxxx`, `applet-xxxx`, or `worfklow-xxxx`
   Runnable to launch for each of the inputs
-- batch-inputs: `hash`, a dictionary of key-value pairs, where the key is an input name,
+- batch_inputs: `hash`, a dictionary of key-value pairs, where the key is an input name,
 and the value is an array of elements.
-- common-inputs: `hash`, a dictionary of key-value pairs that are held constant.
-- files: `file:array`, an array of any file ID in batch-inputs.
-- instance_types (optional): `string:array`, an array of instances types
+- common_inputs: `hash`, a dictionary of key-value pairs that are held constant.
+- files: `array:file`, an array of any file ID in batch-inputs.
+- instance_types (optional): `array:string`, an array of instances types
 
 
 ## Scatter app outputs
-- ouputs: `hash`
--
+- launch_args: `array:hash` an array of dictionaries that were used to call the executable
+- results: `hash` an array for each output of the executable.
