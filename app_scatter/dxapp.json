@@ -5,22 +5,26 @@
   "version": "0.0.1",
   "inputSpec": [
     {
-      "name": "executable",
-      "class": "string"
+      "name": "exec_id",
+      "class": "string",
+      "help": "The id of an app, applet, or workflow"
     },
     {
       "name": "batch_inputs",
-      "class": "hash"
+      "class": "hash",
+      "help": "array of values for each executable input key"
     },
     {
       "name": "common_inputs",
       "class": "hash",
-      "optional":  true
+      "optional":  true,
+      "help": "values for input keys that were not specified in batch_inputs"
     },
     {
       "name": "files",
       "class": "array:file",
-      "optional":  true
+      "optional":  true,
+      "help": "list of all files that appear in the inputs"
     },
     {
       "name": "instance_types",
