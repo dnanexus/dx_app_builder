@@ -51,29 +51,30 @@ Then, we call the scatter app with:
 The outputs are:
 ```
 {
-  launch_args: {
-   { a: file-aaaa, b: 1, c: "foo", d: [file-zzzz, file-yyyy] }
-   { a: file-bbbb,       c: "foo", d: [file-zzzz, file-yyyy] }
-   { a: file-cccc, b: 4, c: "foo", d: [file-zzzz, file-yyyy] }
-  },
-
   results: {
-    h : [file-uuuu, file-vvvv, file-wwww],
-    g : [5, 9, 11]
+    outputs: {
+       h : [file-uuuu, file-vvvv, file-wwww],
+       g : [5, 9, 11]
+    },
+    launched: {
+      { a: file-aaaa, b: 1, c: "foo", d: [file-zzzz, file-yyyy] }
+      { a: file-bbbb,       c: "foo", d: [file-zzzz, file-yyyy] }
+      { a: file-cccc, b: 4, c: "foo", d: [file-zzzz, file-yyyy] }
   }
 }
 ```
 
 ## Scatter app inputs
-- executable: `app-xxxx`, `applet-xxxx`, or `worfklow-xxxx`
-  Runnable to launch for each of the inputs
+- executable_id: `string`, an id of an *app*, *applet*, or *worfklow*,
+  to launch for each of the inputs
 - batch_inputs: `hash`, a dictionary of key-value pairs, where the key is an input name,
 and the value is an array of elements.
 - common_inputs: `hash`, a dictionary of key-value pairs that are held constant.
 - files: `array:file`, an array of any file ID in batch-inputs.
-- instance_types (optional): `array:string`, an array of instances types
+- instance_types (optional): `array:string`, an array of instance types
 
 
 ## Scatter app outputs
-- launch_args: `array:hash` an array of dictionaries that were used to call the executable
-- results: `hash` an array for each output of the executable.
+- results: `hash` a dictionary with two fields.
+   * outputs: an array for each output of the executable.
+   * launched: an array of dictionaries that were used to call the executable

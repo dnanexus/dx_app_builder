@@ -1,12 +1,12 @@
 {
-  "name": "scatter",
+  "name": "app_scatter",
   "summary": "Generic scatter app",
   "dxapi": "1.0.0",
   "version": "0.0.1",
   "inputSpec": [
     {
       "name": "executable",
-      "class": "hash"
+      "class": "string"
     },
     {
       "name": "batch_inputs",
@@ -23,16 +23,12 @@
       "optional":  true
     },
     {
-      "Name": "instance_types",
+      "name": "instance_types",
       "class": "array:string",
       "optional:": true
     }
   ],
   "outputSpec": [
-    {
-      "name": "launch_args",
-      "class": "array:hash"
-    },
     {
       "name": "results",
       "class": "hash"
