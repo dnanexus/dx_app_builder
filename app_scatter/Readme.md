@@ -4,20 +4,31 @@ A generic app for running an executable over a matrix of input elements.
 
 ## Example
 
-Applet `A` (applet-xxxx) with inputs:
-- a: `file`
-- b: `int` (optional)
-- c: `string`
-- d: `file:array`
+Assume that we have applet `A` (applet-xxxx) that takes the input hash:
+```
+{
+    a: file,
+    b: int (optional),
+    c: string,
+    d: file:array
+}
+```
 
-* and outputs:
-- g: File
-- h: Int
+It produces the outputs:
+```
+{
+   g: File,
+   h: Int
+}
+```
 
 We want to launch `A` in parallel, on three sets of inputs:
-{a: file-aaaa, b: 1, c: "foo", d: [file-zzzz, file-yyyy]}
-{a: file-bbbb      , c: "foo", d: [file-zzzz, file-yyyy]}
-{a: file-cccc, b: 4, c: "foo", d: [file-zzzz, file-yyyy]}
+
+| a         | b  | c     |  d                     |
+| --        | -- | --    | --                     |
+| file-aaaa | 1  | "foo" | [file-zzzz, file-yyyy] |
+| file-bbbb |    | "foo" | [file-zzzz, file-yyyy] |
+| file-cccc | 4  | "foo" | [file-zzzz, file-yyyy] |
 
 We split the inputs to those that change between invocations
 (*batch-inputs*), and those that remain fixed (*common-inputs*).
@@ -35,6 +46,21 @@ files: [file-aaaa, file-bbbb, file-cccc, file-yyyy, file-zzzz]
 }
 ```
 
+The outputs are:
+```
+{
+launch_args: {
+   { a: file-aaaa, b: 1, c: "foo", d: [file-zzzz, file-yyyy]
+   { a: file-bbbb, c: "foo", d: [file-zzzz, file-yyyy] }
+   { a: file-cccc, b: 4, c: "foo", d: [file-zzzz, file-yyyy] }
+
+  results: {
+    h : file:array
+    g : int:array
+  }
+}
+```
+
 ## Scatter app inputs
 - executable: `app-xxxx`, `applet-xxxx`, or `worfklow-xxxx`
   Runnable to launch for each of the inputs
@@ -46,3 +72,5 @@ and the value is an array of elements.
 
 
 ## Scatter app outputs
+- ouputs: `hash`
+-
