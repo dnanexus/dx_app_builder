@@ -6,6 +6,7 @@ import dxpy
 import time
 import json
 
+BATCH_LIMIT = 500
 def is_dx_file(ivalue):
     return (isinstance(ivalue, dict) and
             '$dnanexus_link' in ivalue and
@@ -66,6 +67,9 @@ def validate(exec_id, batch_inputs, common_inputs, files, instance_types):
                 raise Exception("Input array sizes do not match {} width={} crnt_width={}"
                               .format(key, width, crnt_width))
         launch_arrays[key] = arrValues
+    if width > BATCH_LIMIT:
+        raise Exception("Batch execution called with {} > {} rows".format(width, BATCH_LIMIT))
+
     if not isinstance(common_inputs, dict):
         raise Exception("common_inputs is not a dictionary type")
 
