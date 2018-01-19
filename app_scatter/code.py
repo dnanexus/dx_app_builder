@@ -111,7 +111,6 @@ def launch_jobs(executable, launch_dicts, job_instance_types):
             jobs.append(job)
     else:
         for (d, i_type) in zip(launch_dicts, job_instance_types):
-            print("Running executable with i_type={}".format(i_type))
             job = executable.run(d, instance_type=i_type)
             jobs.append(job)
     return jobs

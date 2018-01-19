@@ -75,6 +75,6 @@ and the value is an array of elements.
 
 
 ## Scatter app outputs
-- results: `hash` a dictionary with two fields.
+- results: `hash` a dictionary with two fields
    * outputs: an array for each output of the executable.
    * launched: an array of dictionaries that were used to call the executable
