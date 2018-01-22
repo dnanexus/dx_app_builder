@@ -65,7 +65,7 @@ The outputs are:
 ```
 
 ## Scatter app inputs
-- executable_id: `string`, an id of an *app*, *applet*, or *worfklow*,
+- executable_id: `string`, an id of an *app*, *applet*, or *workflow*,
   to launch for each of the inputs
 - batch_inputs: `hash`, a dictionary of key-value pairs, where the key is an input name,
 and the value is an array of elements.

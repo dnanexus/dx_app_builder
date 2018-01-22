@@ -10,7 +10,10 @@ BATCH_LIMIT = 500
 def is_dx_file(ivalue):
     return (isinstance(ivalue, dict) and
             '$dnanexus_link' in ivalue and
-            ivalue['$dnanexus_link'].startswith("file-"))
+            (ivalue['$dnanexus_link'].startswith("file-") or
+             isinstance(ivalue['$dnanexus_link'], dict) and
+             "id" in ivalue['$dnanexus_link'] and
+             "project" in ivalue['$dnanexus_link']))
 
 # collect results, and return as JBOR arrays
 #
@@ -142,7 +145,7 @@ def main(**job_inputs):
     job_instance_types = d['job_instance_types']
 
     # build dictionary for each invocation
-    # TODO: What happens to null values?
+    # TODO: replace this with a call to validate()
     launch_dicts = []
     for i in range(0, width):
         args = {}
@@ -157,6 +160,8 @@ def main(**job_inputs):
     jobs = launch_jobs(executable, launch_dicts, job_instance_types)
 
     # Collect arrays of JBORs
+    #
+    # We -may- need to upload these files to the project.
     outputs = collect(output_spec, jobs)
     results = {
         'outputs': outputs,
