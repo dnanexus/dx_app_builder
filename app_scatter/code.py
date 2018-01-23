@@ -7,33 +7,51 @@ import time
 import json
 
 BATCH_LIMIT = 500
+
 def is_dx_file(ivalue):
     return (isinstance(ivalue, dict) and
             '$dnanexus_link' in ivalue and
             (ivalue['$dnanexus_link'].startswith("file-") or
-             isinstance(ivalue['$dnanexus_link'], dict) and
-             "id" in ivalue['$dnanexus_link'] and
-             "project" in ivalue['$dnanexus_link']))
+             (isinstance(ivalue['$dnanexus_link'], dict) and
+              "id" in ivalue['$dnanexus_link'] and
+              "project" in ivalue['$dnanexus_link'])))
 
-# collect results, and return as JBOR arrays
+# collect results, and return as JBOR arrays. Make
+# an auxiliary list of the files in the outputs.
 #
 #  output_spec: description of executable
 #  jobs: array of jobs/analyses that were launched
 def collect(output_spec, jobs):
-    output_keys = []
+    all_keys = []
+    file_keys = []
+    file_array_keys = []
     for d in output_spec:
-        output_keys.append(d["name"])
-    print("output_keys={}".format(output_keys))
+        key_name = d["name"]
+        all_keys.append(key_name)
+        if d["class"] == "file":
+            file_keys.append(key_name)
+        if d["class"] == "array:file":
+            file_array_keys.append(key_name)
+    print("all_keys={}".format(all_keys))
+    print("file_keys={}".format(file_keys))
 
     outputs = {}
-    for okey in output_keys:
+    for key in all_keys:
         values = []
         for j in jobs:
-            out_val = j.get_output_ref(okey)
-            values.append(out_val)
-        outputs[okey] = values
+            v = j.get_output_ref(key)
+            values.append(v)
+        outputs[key] = values
 
-    return outputs
+    # Make a list of all the files in the output
+    out_files = []
+    for key in file_keys:
+        for j in jobs:
+            v = j.get_output_ref(key)
+            out_files.append(v)
+
+    return { "outputs" : outputs,
+             "files" : out_files }
 
 # This currently overlaps with the validate method implemented in the
 # core platform (TODO).
@@ -125,6 +143,7 @@ def launch_jobs(executable, launch_dicts, job_instance_types):
 @dxpy.entry_point('main')
 def main(**job_inputs):
     # Process input arguments, some of which may be empty
+    #
     exec_id = job_inputs['exec_id']
     batch_inputs = job_inputs['batch_inputs']
     common_inputs = {}
@@ -160,13 +179,9 @@ def main(**job_inputs):
     jobs = launch_jobs(executable, launch_dicts, job_instance_types)
 
     # Collect arrays of JBORs
-    #
-    # We -may- need to upload these files to the project.
-    outputs = collect(output_spec, jobs)
-    results = {
-        'outputs': outputs,
-        'launched': launch_dicts
-    }
-    return {'results': results}
+    collected = collect(output_spec, jobs)
+    return {'results': { 'outputs': collected["outputs"],
+                         'launched': launch_dicts },
+            'files': collected["files"] }
 
 dxpy.run()

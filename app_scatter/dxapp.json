@@ -36,6 +36,12 @@
     {
       "name": "results",
       "class": "hash"
+    },
+    {
+      "name": "files",
+      "class": "array:file",
+      "optional":  true,
+      "help": "list of all files that appear in the results"
     }
   ],
   "runSpec": {
