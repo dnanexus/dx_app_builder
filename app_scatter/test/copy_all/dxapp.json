@@ -1,0 +1,48 @@
+{
+  "name": "copy_all",
+  "summary": "Copy all kinds of inputs to the outputs",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "plant",
+      "class": "file"
+    },
+    {
+      "name": "thresholds",
+      "class": "array:int"
+    },
+    {
+      "name": "pie",
+      "class": "float"
+    },
+    {
+      "name": "misc",
+      "class": "hash"
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "plant",
+      "class": "file"
+    },
+    {
+      "name": "thresholds",
+      "class": "array:int"
+    },
+    {
+      "name": "pie",
+      "class": "float"
+    },
+    {
+      "name": "misc",
+      "class": "hash"
+    }
+  ],
+  "runSpec": {
+    "interpreter": "python2.7",
+    "file": "code.py",
+    "distribution": "Ubuntu",
+    "release": "14.04"
+  }
+}
