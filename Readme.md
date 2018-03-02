@@ -40,5 +40,6 @@ the build procedure are packed into the asset.
 
 * `create_asset_precise`: builds an asset targeting Ubuntu 12.04
 * `create_asset_trusty`: builds an asset targeting Ubuntu 14.04
+* `create_asset_xenial`: builds an asset targeting Ubuntu 16.04
 
 More info: https://wiki.dnanexus.com/Developer-Tutorials/Asset-Build-Process
