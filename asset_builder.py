@@ -40,7 +40,7 @@ def get_file_list(output_file, resources_to_ignore):
     This method find all the files in the system and writes it to the output file
     """
     tmp_dir = path.dirname(output_file) + "*"
-    skipped_paths = ["/proc*", tmp_dir, "/run*", "/boot*", "/home/dnanexus*", "/sys*"]
+    skipped_paths = ["/proc*", tmp_dir, "/run*", "/boot*", "/home/dnanexus*", "/sys*", "/var/lib/lxc*"]
     cmd = ["sudo", "find", "/"]
     for ignore_dir in (skipped_paths + resources_to_ignore):
         cmd.extend(["-not", "-path", ignore_dir])
