@@ -3,7 +3,7 @@
   "title": "Create asset bundle for Ubuntu 14.04",
   "summary": "Creates an asset bundle targeted for apps/applets running on Ubuntu 14.04",
   "dxapi": "1.0.0",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "openSource": true,
   "categories": ["hidden_app"],
   "inputSpec": [
@@ -44,11 +44,13 @@
     "aws:us-east-1": {"systemRequirements": {"*": {"instanceType": "mem2_ssd1_x4"}}},
     "aws:eu-central-1": {"systemRequirements": {"*": {"instanceType": "mem2_ssd1_x4"}}},
     "aws:cn-north-1": {"systemRequirements": {"*": {"instanceType": "mem2_ssd1_x4"}}},
-    "aws:ap-southeast-2": {"systemRequirements": {"*": {"instanceType": "mem2_ssd1_x4"}}}
+    "aws:ap-southeast-2": {"systemRequirements": {"*": {"instanceType": "mem2_ssd1_x4"}}},
+    "azure:westeurope": {"systemRequirements": {"*": {"instanceType": "azure:mem2_ssd1_x4"}}}
   },
   "access": {
     "network": ["*"]
   },
   "authorizedUsers": ["PUBLIC"],
-  "developers": ["org-dnanexus"]
+  "developers": ["org-dnanexus"],
+  "billTo": "org-dnanexus"
 }
