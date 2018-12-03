@@ -5,3 +5,5 @@ tarball_app_builder/resources/opt/pythonlibs/*.py
 tarball_applet_builder/resources/opt/pythonlibs/*.py
 tarball_app_builder_trusty/resources/opt/pythonlibs/*.py
 tarball_applet_builder_trusty/resources/opt/pythonlibs/*.py
+app_builder.py
+!/app_builder.py
