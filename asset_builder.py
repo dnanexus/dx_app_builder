@@ -40,7 +40,8 @@ def get_file_list(output_file, resources_to_ignore):
     This method find all the files in the system and writes it to the output file
     """
     tmp_dir = path.dirname(output_file) + "*"
-    skipped_paths = ["/proc*", tmp_dir, "/run*", "/boot*", "/home/dnanexus*", "/sys*", "/var/lib/lxc*"]
+    skipped_paths = ["/proc*", tmp_dir, "/run*", "/boot*", "/home/dnanexus*", "/sys*", "/var/lib/lxc*",
+                     "/dev/ptmx", "/dev/pts/ptmx"]
     cmd = ["sudo", "find", "/"]
     for ignore_dir in (skipped_paths + resources_to_ignore):
         cmd.extend(["-not", "-path", ignore_dir])
@@ -146,7 +147,7 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
             print >> sys.stdout, output
             print >> sys.stderr, err
             raise subprocess.CalledProcessError(retcode, cmd, output=output)
-    
+
     after_file_path_sort = tempfile.gettempdir() + '/after-sorted.txt'
     print >> sys.stderr, "Preparing the list of files in the system after installing user libraries."
     get_system_snapshot(after_file_path_sort, ignore_dir)
