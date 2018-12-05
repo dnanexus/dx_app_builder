@@ -1,0 +1,8 @@
+{
+    "name": "sample_xenial_asset",
+    "title": "An Example Asset that tests 16.04 xenial asset build",
+    "description": "This is just an asset that touches a couple files. Its tested by making sure the touched files exists in the tar.",
+    "version": "0.0.1",
+    "distribution": "Ubuntu",
+    "release": "16.04"
+}
