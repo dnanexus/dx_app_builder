@@ -41,7 +41,7 @@ def get_file_list(output_file, resources_to_ignore):
     """
     tmp_dir = path.dirname(output_file) + "*"
     skipped_paths = ["/proc*", tmp_dir, "/run*", "/boot*", "/home/dnanexus*", "/sys*", "/var/lib/lxc*",
-                     "/dev/ptmx", "/dev/pts/ptmx"]
+                     "/dev/ptmx", "/dev/pts/ptmx", "/dev/fuse", "/dev/net/tun"]
     cmd = ["sudo", "find", "/"]
     for ignore_dir in (skipped_paths + resources_to_ignore):
         cmd.extend(["-not", "-path", ignore_dir])
