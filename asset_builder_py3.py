@@ -43,6 +43,7 @@ def get_file_list(output_file, resources_to_ignore):
     skipped_paths = ["/proc*", tmp_dir, "/run*", "/boot*", "/home/dnanexus*", "/sys*", "/var/lib/lxc*",
                      "/dev/ptmx", "/dev/pts/ptmx", "/dev/fuse", "/dev/net/tun"]
     cmd = ["sudo", "find", "/"]
+
     for ignore_dir in (skipped_paths + resources_to_ignore):
         cmd.extend(["-not", "-path", ignore_dir])
 
@@ -54,7 +55,7 @@ def get_file_list(output_file, resources_to_ignore):
     with open(output_file, "w") as bfile:
         for line in ps_file.stdout:
             sp_code = ps_file.poll()
-            file_name = line.rstrip()
+            file_name = line.rstrip().decode()
             if file_name == "":
                 if sp_code is not None:
                     break
@@ -65,7 +66,7 @@ def get_file_list(output_file, resources_to_ignore):
             try:
                 mtime = str(os.path.getmtime(file_name))
             except OSError as os_err:
-                print os_err
+                print(os_err)
                 mtime = ''
             # file_name should not have special characters
             # TODO escape the file name
@@ -81,10 +82,9 @@ def get_file_diffs(first_file, second_file, diff_file):
     ps_pipe = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     with open(diff_file, "w") as bfile:
         for line in ps_pipe.stdout:
-            line = line.rstrip()
+            line = line.rstrip().decode()
             file_name = '\t'.join(line.split('\t')[:-1])
             bfile.write(file_name + '\n')
-            print(file_name)
     ps_pipe.stdout.close()
 
 
@@ -124,43 +124,43 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
     ignore_dir = conf_data.get("excludeResource", [])
 
     before_file_path_sort = tempfile.gettempdir() + '/before-sorted.txt'
-    print >> sys.stderr, "Preparing the list of files in the system before installing any library."
+    print("Preparing the list of files in the system before installing any library.", file=sys.stderr)
     get_system_snapshot(before_file_path_sort, ignore_dir)
 
     if custom_asset_fh is not None:
-        print >> sys.stderr, "Installing custom resources given by the user in the tarball."
+        print("Installing custom resources given by the user in the tarball.", file=sys.stderr)
         subprocess.check_call(["sudo", "tar", "-xzf", custom_assetfile_path, '--no-same-owner', "-C", "/"])
 
     if "execDepends" in conf_data:
-        print >> sys.stderr, "Installing execDepends."
+        print("Installing execDepends.", file=sys.stderr)
         install_run_spec(conf_data['execDepends'])
 
     # when running make, grab the output and err before raising error
     if asset_makefile_fh is not None:
-        print >> sys.stderr, "Running make."
+        print("Running make.", file=sys.stderr)
         mk_cmd = ["sudo", "make", "-C", os.getcwd()]
         process = subprocess.Popen(mk_cmd, stdout=subprocess.PIPE)
         output, err = process.communicate()
         retcode = process.poll()
         if retcode:
             cmd = mk_cmd
-            print >> sys.stdout, output
-            print >> sys.stderr, err
+            print(output, file=sys.stdout)
+            print(err, file=sys.stderr)
             raise subprocess.CalledProcessError(retcode, cmd, output=output)
 
     after_file_path_sort = tempfile.gettempdir() + '/after-sorted.txt'
-    print >> sys.stderr, "Preparing the list of files in the system after installing user libraries."
+    print("Preparing the list of files in the system after installing user libraries.", file=sys.stderr)
     get_system_snapshot(after_file_path_sort, ignore_dir)
 
     diff_file_path = tempfile.gettempdir() + "/diff.txt"
-    print >> sys.stderr, "Preparing the list of new and updated files after the installation."
+    print("Preparing the list of new and updated files after the installation.", file=sys.stderr)
     get_file_diffs(before_file_path_sort, after_file_path_sort, diff_file_path)
 
     # TODO: temporary fix for dx-unpack not tokenizing its command line
     # correctly, resulting in being unable to extract filenames with whitespace
     # in them
     tar_output = re.sub(r"\s+", '-', conf_data["name"]) + ".tar.gz"
-    print >> sys.stderr, "Creating the tarball '" + tar_output + "' of files listed in: " + diff_file_path
+    print("Creating the tarball '" + tar_output + "' of files listed in: " + diff_file_path, file=sys.stderr)
     tar_cmd = ["tar", "-Pcz", "--no-recursion", "-T", diff_file_path, "-f", "-"]
 
     tar_ps = subprocess.Popen(tar_cmd, stdout=subprocess.PIPE)
@@ -168,7 +168,7 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
                                   "--visibility", "hidden"],
                                   stdin=tar_ps.stdout, stdout=subprocess.PIPE)
     tar_ps.stdout.close()
-    asset_tarball_id = upload_ps.communicate()[0].rstrip()
+    asset_tarball_id = upload_ps.communicate()[0].rstrip().decode()
     tar_ps.wait()
     upload_ps.stdout.close()
 
@@ -180,6 +180,8 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
         run_spec_version = str(conf_data["runSpecVersion"])
     else:
         run_spec_version = "0"
+    runSpec_properties['distribution'] = conf_data["distribution"]
+    runSpec_properties['release'] = conf_data["release"]
 
     record_properties = {
                           "title": conf_data["title"],
@@ -197,7 +199,7 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
     asset_file = dxpy.DXFile(asset_tarball_id)
     asset_file.set_properties({"AssetBundle": asset_bundle.get_id()})
 
-    print >> sys.stderr, "\n'" + record_name + "' asset bundle created!\n"
+    print(sys.stderr, "\n'" + record_name + "' asset bundle created!\n", file=sys.stderr)
 
     output = {}
     output["asset_bundle"] = dxpy.dxlink(asset_bundle)
