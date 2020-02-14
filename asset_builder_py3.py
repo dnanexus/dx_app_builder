@@ -180,8 +180,6 @@ def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
         run_spec_version = str(conf_data["runSpecVersion"])
     else:
         run_spec_version = "0"
-    runSpec_properties['distribution'] = conf_data["distribution"]
-    runSpec_properties['release'] = conf_data["release"]
 
     record_properties = {
                           "title": conf_data["title"],
