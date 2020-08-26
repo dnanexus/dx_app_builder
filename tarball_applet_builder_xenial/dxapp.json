@@ -5,7 +5,16 @@
   "categories": ["Debugging"],
   "billTo": "org-dnanexus",
   "dxapi": "1.0.0",
-  "runSpec": {"file": "tarball_applet_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "build-essential"}], "distribution": "Ubuntu", "release": "16.04", "systemRequirements": {"*": {"instanceType": "mem1_ssd1_x2"}}},
+  "runSpec": {"file": "tarball_applet_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "build-essential"}], "distribution": "Ubuntu", "release": "16.04"},
+  "regionalOptions": {
+    "aws:us-east-1": {"systemRequirements": {"*": {"instanceType": "mem1_ssd1_v2_x4"}}},
+    "aws:eu-west-2": {"systemRequirements": {"*": {"instanceType": "mem1_ssd1_v2_x4"}}},
+    "aws:eu-central-1": {"systemRequirements": {"*": {"instanceType": "mem1_ssd1_v2_x4"}}},
+    "aws:cn-north-1": {"systemRequirements": {"*": {"instanceType": "mem1_ssd1_v2_x4"}}},
+    "aws:ap-southeast-2": {"systemRequirements": {"*": {"instanceType": "mem1_ssd1_v2_x4"}}},
+    "azure:westus": {"systemRequirements": {"*": {"instanceType": "azure:mem1_ssd1_x4"}}},
+    "azure:westeurope": {"systemRequirements": {"*": {"instanceType": "azure:mem1_ssd1_x4"}}}
+  },
   "inputSpec": [
     {"name": "input_file", "class": "file", "label": "Input File", "help": "A .tar.gz file containing DNAnexus app source code"},
     {"name": "build_options", "class": "hash", "optional": true, "label": "Options to pass to builder method", "help": "Hash of extra options to be provided to dx_build_app.build_and_upload_locally"}
@@ -13,7 +22,7 @@
   "outputSpec": [
     {"name": "output_applet", "class": "applet", "label": "Output applet"}
   ],
-  "version": "1.0.15",
+  "version": "1.0.16",
   "openSource": true,
   "access": {
     "network": ["*"]
