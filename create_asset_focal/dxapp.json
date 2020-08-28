@@ -54,5 +54,5 @@
   },
   "authorizedUsers": ["PUBLIC"],
   "developers": ["org-dnanexus"],
-  "billTo": "org-dnanexus"
+  "billTo": "org-dnanexus_apps"
 }
