@@ -4,7 +4,7 @@
   "summary": "Builds an app from a tarball",
   "categories": ["Debugging"],
   "dxapi": "1.0.0",
-  "billTo": "org-dnanexus",
+  "billTo": "org-dnanexus_apps",
   "runSpec": {"file": "tarball_app_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "build-essential"}], "distribution": "Ubuntu", "release": "16.04"},
   "regionalOptions": {
     "aws:us-east-1": {"systemRequirements": {"*": {"instanceType": "mem1_ssd1_v2_x4"}}},
@@ -23,7 +23,7 @@
   ],
   "outputSpec": [
   ],
-  "version": "1.0.16",
+  "version": "1.0.17",
   "openSource": true,
   "access": {
     "developer": true,

@@ -3,7 +3,7 @@
   "title": "Tarball Applet Builder (Xenial)",
   "summary": "Builds an applet from a tarball",
   "categories": ["Debugging"],
-  "billTo": "org-dnanexus",
+  "billTo": "org-dnanexus_apps",
   "dxapi": "1.0.0",
   "runSpec": {"file": "tarball_applet_builder.py", "interpreter": "python2.7", "execDepends": [{"name": "build-essential"}], "distribution": "Ubuntu", "release": "16.04"},
   "regionalOptions": {
@@ -22,7 +22,7 @@
   "outputSpec": [
     {"name": "output_applet", "class": "applet", "label": "Output applet"}
   ],
-  "version": "1.0.16",
+  "version": "1.0.17",
   "openSource": true,
   "access": {
     "network": ["*"]

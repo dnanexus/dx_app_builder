@@ -3,7 +3,7 @@
   "title": "Create asset bundle for Ubuntu 16.04",
   "summary": "Creates an asset bundle targeted for apps/applets running on Ubuntu 16.04",
   "dxapi": "1.0.0",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "openSource": true,
   "categories": ["hidden_app"],
   "inputSpec": [
@@ -52,6 +52,5 @@
     "network": ["*"]
   },
   "authorizedUsers": ["PUBLIC"],
-  "developers": ["org-dnanexus"],
-  "billTo": "org-dnanexus"
+  "billTo": "org-dnanexus_apps"
 }
