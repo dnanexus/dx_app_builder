@@ -24,6 +24,7 @@ import time
 import json
 import sys
 import re
+import lsb_release
 import dxpy
 from dxpy.utils.exec_utils import DXExecDependencyInstaller
 
@@ -42,6 +43,9 @@ def get_file_list(output_file, resources_to_ignore):
     tmp_dir = path.dirname(output_file) + "*"
     skipped_paths = ["/proc*", tmp_dir, "/run*", "/boot*", "/home/dnanexus*", "/sys*", "/var/lib/lxc*",
                      "/dev/ptmx", "/dev/pts/ptmx", "/dev/fuse", "/dev/net/tun"]
+    if lsb_release.get_os_release().get("CODENAME", "xenial") == "focal":
+        # Ubuntu 20.04 /bin and /sbin are symlinks to /usr/bin and /usr/sbin
+        skipped_paths.extend(["/bin", "/sbin"])
     cmd = ["sudo", "find", "/"]
 
     for ignore_dir in (skipped_paths + resources_to_ignore):
