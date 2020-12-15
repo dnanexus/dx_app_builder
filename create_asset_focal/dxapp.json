@@ -20,6 +20,13 @@
       "optional": true
     },
     {
+      "name": "asset_dotenv",
+      "label": "A .env file that can be loaded by the Makefile",
+      "class": "file",
+      "optional": true,
+      "patterns": [".env"]
+    },
+    {
       "name": "custom_asset",
       "label": "An archive file (tar.gz) containing custom assets",
       "class": "file",

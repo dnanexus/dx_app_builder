@@ -98,22 +98,27 @@ def get_system_snapshot(output_file_path, ignore_files):
         proc.communicate()
 
 
-def build_asset(conf_json_fh, asset_makefile_fh, custom_asset_fh):
+def build_asset(conf_json_fh, asset_makefile_fh, asset_dotenv_fh, custom_asset_fh):
     conf_json_fh = dxpy.DXFile(conf_json_fh)
 
     if asset_makefile_fh is not None:
         asset_makefile_fh = dxpy.DXFile(asset_makefile_fh)
+    if asset_dotenv_fh is not None:
+        asset_dotenv_fh = dxpy.DXFile(asset_dotenv_fh)
     if custom_asset_fh is not None:
         custom_asset_fh = dxpy.DXFile(custom_asset_fh)
 
     asset_conffile_path = "assetLib.json"
     custom_assetfile_path = "asset-dl.tar.gz"
     asset_makefile_path = "Makefile"
+    asset_dotenv_path = ".env"
 
     dxpy.download_dxfile(conf_json_fh, asset_conffile_path)
 
     if asset_makefile_fh is not None:
         dxpy.download_dxfile(asset_makefile_fh, asset_makefile_path)
+    if asset_dotenv_fh is not None:
+        dxpy.download_dxfile(asset_dotenv_fh, asset_dotenv_path)
     if custom_asset_fh is not None:
         dxpy.download_dxfile(custom_asset_fh, custom_assetfile_path)
 
