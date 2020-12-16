@@ -45,7 +45,7 @@ def get_file_list(output_file, resources_to_ignore):
                      "/dev/ptmx", "/dev/pts/ptmx", "/dev/fuse", "/dev/net/tun"]
     if lsb_release.get_os_release().get("CODENAME", "xenial") == "focal":
         # Ubuntu 20.04 /bin and /sbin are symlinks to /usr/bin and /usr/sbin
-        skipped_paths.extend(["/bin", "/sbin"])
+        skipped_paths.extend(["/bin", "/sbin", "/snap*"])
     cmd = ["sudo", "find", "/"]
 
     for ignore_dir in (skipped_paths + resources_to_ignore):
