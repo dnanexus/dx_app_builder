@@ -3,7 +3,7 @@
   "title": "Create asset bundle for Ubuntu 20.04",
   "summary": "Creates an asset bundle targeted for apps/applets running on Ubuntu 20.04",
   "dxapi": "1.0.0",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "openSource": true,
   "categories": ["hidden_app"],
   "inputSpec": [
